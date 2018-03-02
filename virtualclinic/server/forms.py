@@ -222,3 +222,167 @@ class EmployeeRegistrationForm(BasicForm):
         if password_first and password_second and password_first!=password_second
             self.mark_error('password_second','Passwords do not match')
         return cleaned_data
+
+class PrescriptionForm(BasicForm):
+    patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
+    setup_field(patient)
+    doctor = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_DOCTOR))
+    setup_field(doctor)
+    date = forms.DateField()
+    setup_field(date)
+    medication = forms.CharField(max_length=50)
+    setup_field(medication,"Enter medication here")
+    strength = forms.CharField(max_length=30)
+    setup_field(strength,"Enter strength here")
+    instruction = forms.CharField(max_length=200)
+    setup_field(instruction,"Enter instruction here")
+    refill = forms.IntegerField()
+    setup_field(refill,"Enter number of refills")
+
+class HospitalForm(BasicForm):
+    city = forms.CharField(max_length=50)
+    setup_field(city,"Enter hospital's city")
+    zip = forms.CharField(max_length=50)
+    setup_field(zip,"Enter hospital's pin code")
+    state = forms.ChoiceField(choices=IND_STATES)
+    setup_field(state, "Select the hospital's state")
+    name = forms.CharField(max_lengt=50)
+    setup_field(name,"Enter hospitals name")
+    phone = forms.CharField(max_length=10)
+    setup_field(phone, "Enter hospitals phone number")
+
+class MedTestForm(BasicForm):
+    name = forms.CharField(max_length=50)
+    setup_field(name)
+    date = forms.DateField()
+    setup_field(date)
+    hospital = forms.ModelChoiceField(queryset=Hospital.objects.all())
+    setup_field(hospital)
+    description = forms.CharField(max_length=200)
+    setup_field(description,"Enter description here")
+    doctor = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_DOCTOR))
+    setup_field(doctor)
+    patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
+    setup_field(patient)
+    private = forms.BooleanField(required=False)
+    setup_field(private)
+    completed = forms.BooleanField(required=False)
+    setup_field(completed)
+    image1 = forms.FileField(label='Image 1', required=False)
+    setup_field(image1)
+    image2 = forms.FileField(label='Image 2', required=False)
+    setup_field(image2)
+    image3 = forms.FileField(label='Image 3', required=False)
+    setup_field(image3)
+    image4 = forms.FileField(label='Image 4', required=False)
+    setup_field(image4)
+    image5 = forms.FileField(label='Image 5', required=False)
+    setup_field(image5)
+
+    def assign(self,medtest):
+        medtest.name = self.cleaned_data['name']
+        medtest.date = self.cleaned_data['date']
+        medtest.hospital = self.cleaned_data['hospital']
+        medtest.description = self.cleaned_data['description']
+        medtest.doctor = self.cleaned_data['doctor']
+        medtest.patient = self.cleaned_data['patient']
+        medtest.private = self.cleaned_data['private']
+        medtest.completed = self.cleaned_data['completed']
+        medtest.image1 = self.cleaned_data['image1']
+        medtest.image2 = self.cleaned_data['image2']
+        medtest.image3 = self.cleaned_data['image3']
+        medtest.image4 = self.cleaned_data['image4']
+        medtest.image5 = self.cleaned_data['image5']
+
+    def generate(self):
+        return MedicalTest(
+            name = self.cleaned_data['name'],
+            date = self.cleaned_data['date'],
+            hospital = self.cleaned_data['hospital'],
+            description = self.cleaned_data['description'],
+            doctor = self.cleaned_data['doctor'],
+            patient = self.cleaned_data['patient'],
+            private = self.cleaned_data['private'],
+            completed = self.cleaned_data['completed'],
+            image1 = self.cleaned_data['image1'],
+            image2 =self.cleaned_data['image2'],
+            image3 =self.cleaned_data['image3'],
+            image4 =self.cleaned_data['image4'],
+            image5 = self.cleaned_data['image5'],
+        )
+
+class MedTestDisplayForm(BasicForm):
+    name = forms.CharField(max_length=50)
+    setup_field(name)
+    date = forms.DateField()
+    setup_field(date)
+    hospital = forms.ModelChoiceField(queryset=Hospital.objects.all())
+    setup_field(hospital)
+    description = forms.CharField(max_length=200)
+    setup_field(description, "Enter description here")
+    doctor = forms.ModelChoiceField(queryset=Account.objects.filter(role=20))
+    setup_field(doctor)
+    patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=10))
+    setup_field(patient)
+    private = forms.BooleanField(required=False)
+    setup_field(private)
+    completed = forms.BooleanField(required=False)
+    setup_field(completed)
+
+    def assign(self,medtest):
+        medtest.name = self.cleaned_data['name']
+        medtest.date = self.cleaned_data['date']
+        medtest.hospital = self.cleaned_data['hospital']
+        medtest.description = self.cleaned_data['description']
+        medtest.doctor = self.cleaned_data['doctor']
+        medtest.patient = self.cleaned_data['patient']
+        medtest.private = self.cleaned_data['private']
+        medtest.completed = self.cleaned_data['completed']
+
+class MedicalInfoForm(BasicForm):
+    account = forms.ModelChoiceField(label="Patient", queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
+    setup_field(account)
+    bloodType = forms.ChoiceField(label="Blood Type",choices=MedicalInfo.BLOOD, required=False)
+    setup_field(bloodType)
+    allergy = forms.CharField(max_length=100, required=False)
+    setup_field(allergy, "Enter allergies here")
+    alzheimer = forms.BooleanField(required=False)
+    setup_field(alzheimer)
+    asthma = forms.BooleanField(required=False)
+    setup_field(asthma)
+    diabetes = forms.BooleanField(required=False)
+    setup_field(diabetes)
+    stroke = forms.BooleanField(required=False)
+    setup_field(stroke)
+    comments = forms.CharField(max_length=500, required=False)
+    setup_field(comments, "Enter additional information here")
+
+    def assign(self,medicalInfo):
+        medicalInfo.account = self.cleaned_data['account']
+        medicalInfo.bloodType = self.cleaned_data['bloodType']
+        medicalInfo.allergy = self.cleaned_data['allergy']
+        medicalInfo.alzheimer = self.cleaned_data['alzheimer']
+        medicalInfo.asthma = self.cleaned_data['asthma']
+        medicalInfo.diabetes = self.cleaned_data['diabetes']
+        medicalInfo.stroke = self.cleaned_data['stroke']
+        medicalInfo.comments = self.cleaned_data['comments']
+
+class ImportForm(forms.Form):
+    upload = forms.FileField(required=True, widget=forms.FileInput())
+
+class ExportForm(forms.Form):
+    CHOICES = (
+        ('hospitals','Download all hospitals'),
+        ('users','Download all users'),
+    )
+    export = forms.ChoiceField(required=True,widget=forms.RadioSelect, choices=CHOICES)
+
+class StatisticsForm(BasicForm):
+    startDate = forms.DateTimeField(required=True,label="Start Time")
+    setup_field(startDate,"Enter as YYYY-MM-DD HH-MM")
+    endDate = forms.DateTimeField(required=True, label="Start Time")
+    setup_field(endDate, "Enter as YYYY-MM-DD HH-MM")
+
+    def assign(self,statistics):
+        statistics.startTime = self.cleaned_data['startDate']
+        statistics.endTime = self.cleaned_data['endDate']
