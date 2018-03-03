@@ -217,6 +217,24 @@ class Appointment(models.Model):
         }
         return fields
 
+
+class Message(models.Model):
+    target = models.ForeignKey(Account, related_name="message_target",on_delete= models.CASCADE)
+    sender = models.ForeignKey(Account, related_name="message_sender", on_delete= models.CASCADE)
+    header = models.CharField(max_length=300)
+    body = models.CharField(max_length=1000)
+    sender_deleted = models.BooleanField(default=False)
+    target_deleted = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    account = models.ForeignKey(Account, related_name="notifications_account",on_delete= models.CASCADE)
+    message = models.CharField(max_length=200)
+    read = models.BooleanField(default=False)
+    sent_timestamp = models.DateTimeField(auto_now_add=True)
+    read_timestamp = models.DateTimeField(blank=True, null=True)
+
 class Prescription(models.Model):
     patient = models.ForeignKey(Account,related_name="prescription_patient",on_delete = models.CASCADE)
     doctor = models.ForeignKey(Account, related_name="prescription_doctor",on_delete = models.CASCADE)
