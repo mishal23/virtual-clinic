@@ -35,7 +35,11 @@ def authentication_check(request, required_roles=None, required_GET=None):
                 return HttpResponseRedirect('/error/denied/')
 
 
+<<<<<<< HEAD
 def parse_session(request, template_data=None):
+=======
+def parse_session(request,template_data=None):
+>>>>>>> 99b36ee3d493d42fae5093d861428ad26a4ec2ef
     """
     Checks the session for any alert data. If there is alert data, it added to the given template data.
     :param request: The request to check session data for
