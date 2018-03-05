@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}View Appointments{% endblock %}
+{% block sidebar_appointment %}active{% endblock %}
+{% block body_header %}
+    View Appointments
+    <span class="lead"> Click on an appointment to show more options.</span>
+    <br>
+    <a class="btn btn-success btn-sm" href="/appointment/create/" role="button">New Appointment</a>
+    <a class="btn btn-primary btn-sm" href="/appointment/list/" role="button">List View</a>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+        </div>
+        <div class="col-sm-12">
+            {% include "virtualclinic/appointment/appointment_calendar.html" %}
+        </div>
+    </div>
+{% endblock %}

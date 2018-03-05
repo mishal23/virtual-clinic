@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    Views Appointments
+{% endblock %}
+{% block sidebar_appointment %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Appointments
+    <br>
+    <a class="btn btn-success btn-sm" href="/appointment/create/" role="button">New Appointment</a>
+    <a class="btn btn-primary btn-sm" href="/appointment/calendar/" role="button">Calendar View</a>
+{% endblock %}
+{% block body %}
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#appointments-active" id="appointments-active" role="tab" data-toggle="tab">Active Appointments</a></li>
+            <li role="presentation" class="active"><a href="#appointments-cancelled" id="appointments-cancelled" role="tab" data-toggle="tab">Cancelled Appointments</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active">
+                <br>
+                <table id="datatable" class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <th>
+                            {% if user.account.role != 20 %}
+                                Doctor
+                            {% endif %}
+                            {% if user.account.role != 10 %}
+                                Patient
+                            {% endif %}
+                        </th>
+                        <th>Description</th>
+                        <th>Hospital</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Status</th>
+                        <th data-defaultsort='disabled'>Options</th>
+                    </thead>
+                    <tbody>
+                        {% for appointment in query %}
+                            <tr>
+                                <td>
+                                    {% if user.account.role != 20 %}
+                                        {{ appointment.doctor.profile }}
+                                    {% endif %}
+                                    {% if user.account.role != 10 %}
+                                        {{ appointment.patient.profile }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ appointment.description }}</td>
+                                <td>{{ appointment.hospital.name }}</td>
+                                <td>{{ appointment.startTime }}</td>
+                                <td>{{ appointment.endTime }}</td>
+                                <td>{{ appointment.status }}</td>
+                                <td>
+                                    {% if appointment.status == "Active" %}
+                                        <a class="btn btn-warning btn-sm" href="/appointment/update/?pk={{ appointment.pk }}" role="button">Update</a>
+                                        {% if not user.account.role == 0 %}
+                                            <script type="text/javascript">
+                                                function proxy{{ appointment.pk }}() {
+                                                    configureModal(
+                                                            {{ appointment.pk }},
+                                                            '{{ appointment.startTime }}',
+                                                            '{{ appointment.hospital.name|sanitizeJS }}'
+                                                        );
+                                                };
+                                            </script>
+                                            <button onclick="proxy{{ appointment.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirm-modal">Cancel</button>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include "virtualclinic/appointment/appointment_modal.html" %}
+    <script type="text/javascript">
+        var virtualclinic = {};
+        virtualclinic.active = [];
+        virtualclinic.cancelled = [];
+        function configureModal(pk, start, hospital) {
+            document.getElementById('confirm-modal-body').innerHTML = 'Are you sure you want to cancel your appointment on '.concat(start, ' at ', hospital, '?');
+            document.getElementById('confirm-modal-hidden').value = pk;
+        }
+        function displayActive() {
+            var table = $('#datatable').DataTable();
+            table.rows().remove();
+            table.rows.add(virtualclinic.active).draw();
+        }
+        function displayCancelled() {
+            var table = $('#datatable').DataTable();
+            table.rows().remove();
+            table.rows.add(virtualclinic.cancelled).draw();
+        }
+        $(document).ready(function() {
+            $('#datatable').DataTable({
+                "columnDefs": [
+                    { "orderable": false, "targets": 6 },
+                    { "searchable": false, "targets": 6 }
+                ]
+            });
+            $('#datatable').DataTable().rows().every( function () {
+                if(this.data()[5] == "Active" || this.data()[5] == "Active") {
+                    virtualclinic.active.push(this.data());
+                } else if(this.data()[5] == "Cancelled") {
+                    virtualclinic.cancelled.push(this.data());
+                }
+                console.log("PARSE")
+            });
+            $('#appointments-active').click(function (e) {
+                  displayActive();
+            });
+            $('#appointments-cancelled').click(function (e) {
+                  displayCancelled();
+            });
+            displayActive();
+        });
+    </script>
+{% endblock %}

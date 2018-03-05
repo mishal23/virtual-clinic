@@ -1,0 +1,10 @@
+
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Update Medical Test{% endblock %}
+{% block sidebar_medtest %}active{% endblock %}
+{% block body_header %}Update Medical Test{% endblock %}
+{% block body %}
+    <p class="lead">Make changes to the medical test and click '{{ form_button }}' when finished.</p>
+    {% include "singleform.html" %}
+{% endblock %}

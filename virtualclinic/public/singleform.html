@@ -1,0 +1,31 @@
+{% load app_filters %}
+<form class="form-horizontal" action="./{% if form_action %}{{ form_action }}{% endif %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+            <label for="{{field.id_for_label}}" class="col-sm-3 col-lg-2 control-label">{{ field.label }}</label>
+            <div class="col-sm-9 col-lg-10">
+                <div {% if field|isDateable %}class="date input-group" id="form_{{field.id_for_label}}"{% endif %}>
+                    {{ field }}
+                    {% if field|isDateable %}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#form_{{ field.id_for_label }}').datetimepicker({
+                                    {% if field|isDateField %}
+                                        format: 'YYYY-MM-DD'
+                                    {% elif field|isDateTimeField %}
+                                        format: 'YYYY-MM-DD HH:mm'
+                                    {% elif field|isTimeField %}
+                                        format: 'HH:mm'
+                                    {% endif %}
+                                });
+                            });
+                        </script>
+                    {% endif %}
+                </div>
+                {{ field.errors }}
+            </div>
+        </div>
+    {% endfor %}
+    <input class="btn btn-primary col-sm-12" type="submit" value="{{ form_button }}" />
+</form>

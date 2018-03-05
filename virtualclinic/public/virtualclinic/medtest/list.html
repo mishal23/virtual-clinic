@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    View Medical Tests
+{% endblock %}
+{% block sidebar_medtest %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Uploaded Medical Tests
+     {% if user.account.role == 40 %}
+        <br>
+        <a class="btn btn-success btn-sm" href="/medtest/upload/" role="button">Upload Medical Test</a>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Doctor</th>
+            <th>Patient</th>
+            <th>Name</th>
+            <th>Hospital</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th data-dafaultsort='disabled'>Options</th>
+        </thead>
+        <tbody>
+            {% for foo in query %}
+                <tr>
+                    <td>{{ foo.doctor.profile }}</td>
+                    <td>{{ foo.patient.profile }}</td>
+                    <td>{{ foo.name }}</td>
+                    <td>{{ foo.hospital.name }}</td>
+                    <td>{{ foo.date }}</td>
+                    <td>{% if foo.completed %}Completed{% else %}In Progress{% endif %}</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/medtest/display/?pk={{ foo.pk }}" role="button">Display</a>
+                        {% if user.account.role == 40 %}
+                            <a class="btn btn-warning btn-sm" href="/medtest/update/?pk={{ foo.pk }}" role="button">Update</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $('#datatable').DataTable({
+               "columnDefs":[
+                   {"orderable":false,"targets":6},
+                   {"searchable":false,"targets":6}
+               ]
+           });
+        });
+    </script>
+{% endblock %}

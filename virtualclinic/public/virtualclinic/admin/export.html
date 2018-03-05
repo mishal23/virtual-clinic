@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Upload CSV File{% endblock %}
+{% block sidebar_admin_import %}active{% endblock %}
+{% block body_header %}
+    Download CSV file
+    <br>
+    <a class="btn btn-success btn-sm" href="/admin/import/" role="button">Upload CSV</a>
+{% endblock %}
+{% block body %}
+    <div class="col-sm-6">
+        <p class="lead">Select a type of file and click '{{ form_button }}' to download.</p>
+        {% include "singleform.html" %}
+    </div>
+{% endblock %}

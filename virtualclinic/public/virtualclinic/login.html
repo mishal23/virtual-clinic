@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Login{% endblock %}
+{% block brand_link %}{% endblock %}
+{% block nav_button %}<a href="/register/">Register</a>{% endblock %}
+{% block body_header %}Welcome to VirtualClinic {% endblock %}
+{% block body %}
+    <div class="row">
+        <p class="lead">Please login or click register to create an account below.</p>
+    </div>
+    {% include "singleform.html" %}
+    <div class="row">
+        <div class="col-sm-12">
+            <br>
+            <a class="btn btn-success col-sm-12" href="/register/" role="button">Register</a>
+        </div>
+    </div>
+{% endblock %}

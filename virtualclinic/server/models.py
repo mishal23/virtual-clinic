@@ -13,6 +13,7 @@ IND_STATES = (
     ("West Bengal","West Bengal")
 )
 
+
 class Location(models.Model):
     city = models.CharField(max_length=50)
     zip = models.CharField(max_length=50)
@@ -25,6 +26,7 @@ class Location(models.Model):
 
     class Admin:
         list_display = ('city','country')
+
 
 class Hospital(models.Model):
     name = models.CharField(max_length=50)
@@ -40,6 +42,7 @@ class Hospital(models.Model):
             'phone',
             'location'
         )
+
 
 class Profile(models.Model):
     GENDER = (
@@ -88,20 +91,24 @@ class Profile(models.Model):
     def __str__(self):
         return self.firstname + " " + self.lastname
 
+
 class Account(models.Model):
     ACCOUNT_UNKNOWN = 0
     ACCOUNT_PATIENT = 10
     ACCOUNT_DOCTOR = 20
     ACCOUNT_ADMIN = 30
+    ACCOUNT_LAB = 40
     ACCOUNT_TYPES = (
-        (ACCOUNT_UNKNOWN,"Unknown"),
-        (ACCOUNT_PATIENT,"Patient"),
-        (ACCOUNT_DOCTOR,"Doctor"),
-        (ACCOUNT_ADMIN,"Admin"),
+        (ACCOUNT_UNKNOWN, "Unknown"),
+        (ACCOUNT_PATIENT, "Patient"),
+        (ACCOUNT_DOCTOR, "Doctor"),
+        (ACCOUNT_ADMIN, "Admin"),
+        (ACCOUNT_LAB, "Lab")
     )
     EMPLOYEE_TYPES = (
-        (ACCOUNT_DOCTOR,"Doctor"),
-        (ACCOUNT_ADMIN,"Admin"),
+        (ACCOUNT_DOCTOR, "Doctor"),
+        (ACCOUNT_ADMIN, "Admin"),
+        (ACCOUNT_LAB, "Lab"),
     )
 
     @staticmethod
@@ -146,6 +153,7 @@ class Account(models.Model):
             'user'
         )
 
+
 class Action(models.Model):
     ACTION_NONE = 0
     ACTION_ACCOUNT = 1
@@ -154,7 +162,9 @@ class Action(models.Model):
     ACTION_APPOINTMENT = 4
     ACTION_MEDTEST = 5
     ACTION_PRESCRIPTION = 6
+    ACTION_MESSAGE = 7
     ACTION_MEDICALINFO = 8
+    ACTION_LAB = 9
     ACTION_TYPES = (
         (ACTION_NONE, "None"),
         (ACTION_ACCOUNT, "Account"),
@@ -163,7 +173,9 @@ class Action(models.Model):
         (ACTION_APPOINTMENT, "Appointment"),
         (ACTION_MEDTEST, "Medical Test"),
         (ACTION_PRESCRIPTION, "Prescription"),
+        (ACTION_MESSAGE,"Message"),
         (ACTION_MEDICALINFO, "Medical Info"),
+        (ACTION_LAB, "Lab"),
     )
 
     @staticmethod
@@ -196,6 +208,7 @@ class Action(models.Model):
     description = models.CharField(max_length=100)
     account = models.ForeignKey(Account, related_name="actions_account",on_delete = models.CASCADE)
 
+
 class Appointment(models.Model):
     doctor = models.ForeignKey(Account, related_name="appointment_doctor",on_delete = models.CASCADE)
     patient = models.ForeignKey(Account, related_name="appointment_patient",on_delete = models.CASCADE)
@@ -217,6 +230,25 @@ class Appointment(models.Model):
         }
         return fields
 
+
+class Message(models.Model):
+    target = models.ForeignKey(Account, related_name="message_target",on_delete= models.CASCADE)
+    sender = models.ForeignKey(Account, related_name="message_sender", on_delete= models.CASCADE)
+    header = models.CharField(max_length=300)
+    body = models.CharField(max_length=1000)
+    sender_deleted = models.BooleanField(default=False)
+    target_deleted = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    account = models.ForeignKey(Account, related_name="notifications_account",on_delete= models.CASCADE)
+    message = models.CharField(max_length=200)
+    read = models.BooleanField(default=False)
+    sent_timestamp = models.DateTimeField(auto_now_add=True)
+    read_timestamp = models.DateTimeField(blank=True, null=True)
+
+
 class Prescription(models.Model):
     patient = models.ForeignKey(Account,related_name="prescription_patient",on_delete = models.CASCADE)
     doctor = models.ForeignKey(Account, related_name="prescription_doctor",on_delete = models.CASCADE)
@@ -226,6 +258,7 @@ class Prescription(models.Model):
     instruction = models.CharField(max_length=200)
     refill = models.IntegerField()
     active = models.BooleanField(default=True)
+
 
 class MedicalInfo(models.Model):
     BLOOD = (
@@ -268,13 +301,14 @@ class MedicalInfo(models.Model):
         }
         return fields
 
+
 class MedicalTest(models.Model):
     name = models.CharField(max_length=50)
     date = models.DateField()
     hospital = models.ForeignKey(Hospital,on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
     doctor = models.ForeignKey(Account, related_name="medicaltest_doctor",on_delete = models.CASCADE)
-    patient = models.ForeignKey(Account,related_name="medicaltest_patient",on_delete = models.CASCADE)
+    patient = models.ForeignKey(Account, related_name="medicaltest_patient",on_delete = models.CASCADE)
     private = models.BooleanField(default=True)
     completed = models.BooleanField()
     image1 = models.FileField(blank=True, null=True, upload_to='medicaltests/%Y/%m/%d')
@@ -301,6 +335,7 @@ class MedicalTest(models.Model):
             'image5': self.image5,
         }
         return fields
+
 
 class Statistics(models.Model):
     startDate = models.DateField()

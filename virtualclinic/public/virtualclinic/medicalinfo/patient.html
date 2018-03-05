@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Medical Info{% endblock %}
+{% block sidebar_medicalinfo %}active{% endblock %}
+{% block body_header %}Medical Info{% endblock %}
+{% block body %}
+    <p class="lead">This is your most recent medical information.</p>
+    {% include "singleform.html" %}
+{% endblock %}

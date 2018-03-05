@@ -1,0 +1,19 @@
+<div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="form-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="form-modal-title"></h3>
+            </div>
+            <div id="form-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <form id="form-modal-action" action="./" method="post">{% csrf_token %}
+                    <input id="form-modal-hidden" type="hidden" name="pk" value="">
+                    <input id="form-modal-submit" class="btn btn-danger btn-block" type="submit" name="cancel" value=""/>
+                </form>
+                <br>
+                <button id="form-modal-return" type="button" class="btn btn-primary btn-block" data-dismiss="modal">Return to list</button>
+            </div>
+        </div>
+    </div>
+</div>

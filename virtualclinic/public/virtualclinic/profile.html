@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Overview{% endblock %}
+{% block sidebar_profile %}active{% endblock %}
+{% block body_header %}Welcome {{ user.account }}{% endblock %}
+{% block body %}
+    <p class="lead">Navigate through the VirtualClinic system using the bar on the left-hand side of the browser.</p>
+    {% if user.account.role <= 20 %}
+        <div class="col-md-7">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Schedule at a glance</div>
+                <div class="panel-body">
+                  {% include "virtualclinic/appointment/appointment_calendar.html" %}
+                </div>
+                <div class="panel-footer"><a href="/appointment/calendar/">For a more detailed schedule view, click here</a></div>
+            </div>
+            <script>
+                $(document).ready(function() {
+                    $('#appointment-calendar').fullCalendar().fullCalendar('option', 'height', 500);
+                    $('#appointment-calendar').fullCalendar().fullCalendar('changeView', 'agendaWeek');
+                });
+            </script>
+        </div>
+        <div class="col-md-5">
+    {% elif user.account.role == 30 %}
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">All System Statistics</div>
+                <div class="panel-body">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <th>Statistic</th>
+                            <th>Count</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Users logged in</td>
+                                <td>{{ total_logins }}</td>
+                            </tr>
+                            </tr>
+                                <td>Users logged out</td>
+                                <td>{{ total_logouts }}</td>
+                            </tr>
+                            </tr>
+                                <td>Appointments created</td>
+                                <td>{{ total_appointments }}</td>
+                            </tr>
+                            </tr>
+                                <td>Medical tests created</td>
+                                <td>{{ total_med_tests }}</td>
+                            </tr>
+                            </tr>
+                                <td>Users registered</td>
+                                <td>{{ total_registered }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer"><a href="/admin/statistics/">For a more detailed statistics view, click here</a></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+    {% else %}
+        <div class="col-md-6">
+    {% endif %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">Recent messages</div>
+            <div class="panel-body">
+                {% include "virtualclinic/message/simple_table.html" %}
+            </div>
+        <div class="panel-footer"><a href="/message/list/">For a more detailed message view, click here</a></div>
+    </div>
+{% endblock %}

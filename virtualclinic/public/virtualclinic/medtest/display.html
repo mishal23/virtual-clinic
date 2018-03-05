@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    View Medical Test
+{% endblock %}
+{% block sidebar_medtest %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Medical Test
+{% endblock %}
+{% block body %}
+    {% include "singleform.html" %}
+    {% if img %}
+        <img src="/media/{{ img }}" width="20%" target="_blank" role="button">
+    {% endif %}
+    {% if img2 %}
+        <img src="/media/{{ img2 }}" width="20%" target="_blank" role="button">
+    {% endif %}
+    {% if img3 %}
+        <img src="/media/{{ img3 }}" width="20%" target="_blank" role="button">
+    {% endif %}
+    {% if img4 %}
+        <img src="/media/{{ img4 }}" width="20%" target="_blank" role="button">
+    {% endif %}
+    {% if img5 %}
+        <img src="/media/{{ img5 }}" width="20%" target="_blank" role="button">
+    {% endif %}
+
+{% endblock %}

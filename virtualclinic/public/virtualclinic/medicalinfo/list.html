@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    View Medical Info
+{% endblock %}
+{% block sidebar_medicalinfo %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Patient's Medical Information
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Patient</th>
+            <th>Blood Type</th>
+            <th>Allergy</th>
+            <th data-dafultsort="disabled">Options</th>
+        </thead>
+        <tbody>
+            {% for medicalinfo in query %}
+                <tr>
+                    <td>{{ medicalinfo.account.profile }}</td>
+                    <td>{{ medicalinfo.bloodType }}</td>
+                    <td>{{ medicalinfo.allergy }}</td>
+                    <td>
+                        {% if not user.account.role == 20 %}
+                            <a class="btn btn-warning btn-sm" href="/medicalinfo/update/?pk={{ medicalinfo.pk }}" role="button">Update</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+                    
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $('#datatable').DataTable({
+              "columnDefs":[
+                  {"orderable":false,"targets":3},
+                  {"searchable":false,"targets":3}
+              ]
+           });
+        });
+    </script>
+{% endblock %}

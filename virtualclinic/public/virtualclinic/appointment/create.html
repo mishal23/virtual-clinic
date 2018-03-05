@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Create Appointment{% endblock %}
+{% block sidebar_appointment %}active{% endblock %}
+{% block body_header %}Create Appointment{% endblock %}
+{% block body %}
+    <p class="lead">Fill out this appointment form and click '{{ form_button }}' when finished.</p>
+    {% include "singleform.html" %}
+{% endblock %}

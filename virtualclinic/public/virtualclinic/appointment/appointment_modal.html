@@ -1,0 +1,36 @@
+<div class="modal fade" id="options-modal" tabindex="-1" role="dialog" aria-labelledby="options-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="options-modal-title">Appointment management</h3>
+            </div>
+            <div id="options-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <a id="options-modal-link-update" class="btn btn-warning btn-block" href="" role="button">Update</a>
+                <a id="options-modal-link-delete" class="btn btn-danger btn-block" role="button">Cancel</a>
+                <br>
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Return to calendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="confirm-modal-title">Cancel confirmation</h3>
+            </div>
+            <div id="confirm-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <form id="confirm-modal-action" action="./" method="post">{% csrf_token %}
+                    <input id="confirm-modal-hidden" type="hidden" name="pk" value="">
+                    <input id="confirm-modal-submit" class="btn btn-danger btn-block" type="submit" name="cancel" value="Cancel the appointment"/>
+                </form>
+                <br>
+                <button id="confirm-modal-return" type="button" class="btn btn-primary btn-block" data-dismiss="modal">Return</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,16 +5,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from server.models import Account, Profile, Action, MedicalInfo
 from server import logger
 
+
 def authentication_check(request, required_roles=None, required_GET=None):
     """
-
     :param request: page request
     :param required_roles: role values of the users allowed to view the page
     :param required_GET:GET values that the page needs to function properly
     :return: A redirect request if there's a problem, None otherwise
     """
     # Authentication check. Users not logged in cannot view this page
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         request.session['alert_danger'] = "You must be logged into VirtualClinic to view that page."
         return HttpResponseRedirect('/')
     # Sanity Check. Users without accounts cannot interact with virtual clinic
@@ -30,11 +30,12 @@ def authentication_check(request, required_roles=None, required_GET=None):
     # Validation check. Make sure this page has any required GET keys
     if required_GET:
         for key in required_GET:
-            if key is not in request.GET:
+            if key is not request.GET:
                 request.session['alert_danger'] = "Looks like you tried to use a malformed URL"
                 return HttpResponseRedirect('/error/denied/')
 
-def parse_session(request,template_data=None):
+
+def parse_session(request, template_data=None):
     """
     Checks the session for any alert data. If there is alert data, it added to the given template data.
     :param request: The request to check session data for
@@ -50,6 +51,7 @@ def parse_session(request,template_data=None):
         template_data['alert_danger'] = request.session.get('alert_danger')
         del request.session['alert_danger']
     return template_data
+
 
 def register_user(email,password,firstname,lastname,role):
     user = User.objects.create_user(
@@ -74,6 +76,7 @@ def register_user(email,password,firstname,lastname,role):
     medical_info.save()
     logger.log(Action.ACTION_ACCOUNT,"Account registered",account)
     return user
+
 
 def sanitize_js(string):
     return string.replace("\\","\\\\").replace("'","\\'")

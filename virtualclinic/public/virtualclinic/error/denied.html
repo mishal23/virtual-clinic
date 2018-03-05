@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Permission Denied{% endblock %}
+{% block sidebar_profile_appointment %}{% endblock %}
+{% block body_header %}You cannot view this page{% endblock %}
+{% block body %}
+    <p class="lead">We couldn't display that page for you.</p>
+    <div class="col-sm-3">
+        <a href="/profile/" class="btn btn-primary btn-block" role="button">Return to profile</a>
+    </div>
+{% endblock %}

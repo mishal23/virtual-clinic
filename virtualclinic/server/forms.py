@@ -36,14 +36,13 @@ def setup_field(field, placeholder=None):
         field.widget.attrs['placeholder'] = placeholder
 
 
-
 class BasicForm(forms.Form):
-    def disable_field(self,field):
+    def disable_field(self, field):
         """
         marks field as disabled
         :param field: name of the field
         """
-        self.fields['field'].widget.attrs['disabled'] = ""
+        self.fields[field].widget.attrs['disabled'] = ""
 
     def mark_error(self, field, description):
         """
@@ -56,6 +55,7 @@ class BasicForm(forms.Form):
 
     def clear_errors(self):
         self._errors = {}
+
 
 class LoginForm(BasicForm):
     email = forms.EmailField(max_length=50,validators=[validate_username_exists])
@@ -75,6 +75,7 @@ class LoginForm(BasicForm):
             if user is None:
                 self.mark_error('password','Incorrect password')
         return cleaned_data
+
 
 class AccountRegisterForm(BasicForm):
     firstname = forms.CharField(label='First Name',max_length=50)
@@ -97,6 +98,7 @@ class AccountRegisterForm(BasicForm):
         if password_first and password_second and password_first!=password_second:
             self.mark_error('password_second','Passwords do not match')
         return cleaned_data
+
 
 class PasswordForm(BasicForm):
     password_current = forms.CharField(label='Current', max_length=50, widget=forms.PasswordInput())
@@ -122,6 +124,7 @@ class PasswordForm(BasicForm):
             if password_current and password_current == password_first:
                 self.mark_error('password_current','Your current and new passwords must be different')
         return cleaned_data
+
 
 class ProfileForm(BasicForm):
     firstname = forms.CharField(label='First Name', max_length=50)
@@ -152,6 +155,7 @@ class ProfileForm(BasicForm):
         profile.allergies = self.cleaned_data['allergies']
         profile.prefHospital = self.cleaned_data['prefHospital']
         profile.primaryCareDoctor = self.cleaned_data['primaryCareDoctor']
+
 
 class AppointmentForm(BasicForm):
     description = forms.CharField(required=True, max_length=50)
@@ -193,9 +197,10 @@ class AppointmentForm(BasicForm):
         startTime = cleaned_data.get('startTime')
         endTime = cleaned_data.get('endTime')
         if startTime and endTime:
-            if endTime<=startTime
+            if endTime<=startTime:
                 self.mark_error('endTime','The appointment end time must come after the start time')
         return cleaned_data
+
 
 class EmployeeRegistrationForm(BasicForm):
     firstname = forms.CharField(label='First Name', max_length=50)
@@ -219,7 +224,7 @@ class EmployeeRegistrationForm(BasicForm):
         cleaned_data = super(EmployeeRegistrationForm,self).clean()
         password_first = cleaned_data.get('password_first')
         password_second = cleaned_data.get('password_second')
-        if password_first and password_second and password_first!=password_second
+        if password_first and password_second and password_first!=password_second:
             self.mark_error('password_second','Passwords do not match')
         return cleaned_data
 
@@ -246,7 +251,7 @@ class HospitalForm(BasicForm):
     setup_field(zip,"Enter hospital's pin code")
     state = forms.ChoiceField(choices=IND_STATES)
     setup_field(state, "Select the hospital's state")
-    name = forms.CharField(max_lengt=50)
+    name = forms.CharField(max_length=50)
     setup_field(name,"Enter hospitals name")
     phone = forms.CharField(max_length=10)
     setup_field(phone, "Enter hospitals phone number")

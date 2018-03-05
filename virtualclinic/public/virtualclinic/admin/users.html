@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Manage Users{% endblock %}
+{% block sidebar_admin_users %}active{% endblock %}
+{% block body_header %}
+    Manage Registered VirtualClinic Users
+    <br>
+    <a class="btn btn-success btn-sm" href="/admin/createemployee/" role="button">Add Employee</a>
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Username</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Role</th>
+        </thead>
+        <tbody>
+            {% for account in query %}
+                <tr>
+                    <td>{{ account.user.username }}</td>
+                    <td>{{ account.profile.firstname }}</td>
+                    <td>{{ account.profile.lastname }}</td>
+                    <td data-value="{{ account.role }}">
+                        <form action="./" method="post" class="form-inline">{% csrf_token %}
+                            <input type="hidden" name="pk" value="{{ account.pk }}">
+                            <select class="form-control" name="role">
+                                <option value="10" {% if account.role == 10 %}selected="selected"{% endif %}>Patient</option>
+                                <option value="20" {% if account.role == 20 %}selected="selected"{% endif %}>Doctor</option>
+                                <option value="30" {% if account.role == 30 %}selected="selected"{% endif %}>Admin</option>
+                                <option value="40" {% if account.role == 40 %}selected="selected"{% endif %}>Lab</option>
+                            </select>
+                            <input class="btn btn-primary" type="submit" value="Save"/>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+        } );
+    </script>
+{% endblock %}

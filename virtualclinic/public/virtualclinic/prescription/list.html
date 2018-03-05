@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    View Prescriptions
+{% endblock %}
+{% block sidebar_prescription %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Prescriptions
+    {% if user.account.role == 20 %}
+        <br>
+        <a class="btn btn-success btn-sm" href="/prescription/create/" role="button">Add Prescription</a>
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Doctor</th>
+            <th>Patient</th>
+            <th>Medication</th>
+            <th>Strength</th>
+            <th>Date</th>
+            <th>Number of Refill(s)</th>
+            <th>Status</th>
+            <th data-defaultsort='disabled'>Options</th>
+        </thead>
+        <tbody>
+            {% for prescription in query %}
+                <tr>
+                    <td>{{ prescription.doctor.profile }}</td>
+                    <td>{{ prescription.patient.profile }}</td>
+                    <td>{{ prescription.medication }}</td>
+                    <td>{{ prescription.strength }}</td>
+                    <td data-value="{{ prescription.date | date:'U' }}">{{ prescription.date }}</td>
+                    <td>{{ prescription.refill }}</td>
+                    <td>{% if prescription.active %}Active{% else %}Deleted{% endif %}</td>
+                    <td>
+                        {% if prescription.active %}
+                            {% if user.account.role == 20 %}
+                                <script type="text/javascript">
+                                    function proxy{{ prescription.pk }}() {
+                                        configureModal({% autoescape on %}
+                                            {{ prescription.pk }}
+                                            '{{ prescription.medication }}',
+                                            '{{ prescription.patient.profile }}'
+                                        {% endautoescape %});
+                                    }
+                                </script>
+                                <button onclick="proxy{{ prescription.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#form-modal">Delete</button>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "form_modal.html" %}
+    <script type="text/javascript">
+        function configureModal(pk, medication, person){
+            document.getElementById('form-modal-title').innerHTML = 'Delete confirmation';
+            document.getElementById('form-modal-body').innerHTML = 'Are you sure you want to delete your prescription of '.concat(medication, ' for ', person, '?');
+            document.getElementById('form-modal-hidden').value = pk;
+            document.getElementById('form-modal-submit').value = 'Delete';
+            document.getElementById('form-modal-submit').name = 'delete';
+        }
+        $(document).ready(function () {
+           $('#datatable').DataTable({
+              "order":[[4,"desc"]],
+               "columnDefs":[
+                   {"orderable":false,"targets":4},
+                   {"searchable":false,"targets":2}
+               ]
+           });
+        });
+    </script>
+{% endblock %}

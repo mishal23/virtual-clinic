@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}View Activity{% endblock %}
+{% block sidebar_admin_activity %}active{% endblock %}
+{% block body_header %}
+    View Activity on VirtualClinic
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Type</th>
+            <th>Description</th>
+            <th>User</th>
+            <th>Time</th>
+        </thead>
+        <tbody>
+            {% for action in query %}
+                <tr>
+                    <td>{{ action.type|getActivityAction }}</td>
+                    <td>{{ action.description }}</td>
+                    <td>{{ action.account.user.username }}</td>
+                    <td>{{ action.timePerformed }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable({
+                "order": [[ 3, "desc" ]]
+            });
+        } );
+    </script>
+{% endblock %}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load app_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Virtual Clinic {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/flatly-bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/dashboard.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/{% block brand_link %}profile/{% endblock %}"><i class="fa fa-hospital-o"></i>  VirtualClinic</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user|isAuthenticated %}
+                        <li class="dropdown">
+                            <a href="/profile/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account Management <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/profile/">Signed in as {{ user.username }}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/profile/">View Profile<i class="pull-right fa fa-user"></i></a></li>
+                                <li><a href="/profile/update/">Update Profile<i class="pull-right fa fa-pencil"></i></a></li>
+                                <li><a href="/profile/password">Change Password<i class="pull-right fa fa-cog"></i></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout">Logout<i class="pull-right fa fa-sign-out"></i></i></a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <p class="nav navbar-text" style="color: #FFF">Not signed in</p>
+                        </li>
+                    {% endif %}
+                    <li>
+                        {% block nav_button %}{% endblock %}
+                    </li>
+                    <li><a data-toggle="modal" data-target="#aboutus-modal">About us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% if user|isAuthenticated %}
+        <nav class="navbar navbar-default sidebar" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        {% if user.account.role >= 0 %}
+                            <li class="{% block sidebar_profile %}{% endblock %}"><a href="/profile/">Profile<i class="pull-right fa fa-user"></i></a></li>
+                            <li class="{% block sidebar_message %}{% endblock %}"><a href="/message/list/">Messages<i class="pull-right fa fa-envelope"></i></a></li>
+                        {% endif %}
+                        {% if user.account.role == 10 or user.account.role == 20 %}
+                            <li class="{% block sidebar_appointment %}{% endblock %}"><a href="/appointment/list/">Appointments<i class="pull-right fa fa-calendar"></i></a></li>
+                            <li class="{% block sidebar_medicalinfo %}{% endblock %}"><a href="{% if user.account.role == 10 %}/medicalinfo/patient/{% else %}/medicalinfo/list/{% endif %}">Medical Info<i class="pull-right fa fa-heartbeat"></i></a></li>
+                        {% endif %}
+                        {% if user.account.role == 40 or user.account.role == 10 or user.account.role == 30%}
+                            <li class="{% block sidebar_medtest %}{% endblock %}"><a href="/medtest/list">Medical Tests<i class="pull-right fa fa-flask"></i></a></li>
+                        {% endif %}
+                        {% if user.account.role == 10 or user.account.role == 20 %}
+                            <li class="{% block sidebar_prescription %}{% endblock %}"><a href="/prescription/list/">Prescriptions<i class="pull-right fa fa-file-text"></i></a></li>
+                        {% endif %}
+                        {% if user.account.role == 30 %}
+                            <li class="{% block sidebar_admin_users %}{% endblock %}"><a href="/admin/users/">Manage Users<i class="pull-right fa fa-users"></i></a></li>
+                            <li class="{% block sidebar_admin_activity %}{% endblock %}"><a href="/admin/activity/">View Activity<i class="pull-right fa fa-eye"></i></a></li>
+                            <li class="{% block sidebar_admin_statistics %}{% endblock %}"><a href="/admin/statistics/">View Statistics<i class="pull-right fa fa-bar-chart"></i></a></li>
+                            <li class="{% block sidebar_admin_import %}{% endblock %}"><a href="/admin/import/">CSV Management<i class="pull-right fa fa-upload"></i></a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+    <div class="container-fluid main">
+        <div class="row">
+            {% if user|isAuthenticated %}
+                <div class="col-sm-12 main">
+            {% else %}
+                <div class="col-sm-offset-3 col-sm-6">
+            {% endif %}
+                <h1 class="page-header">{% block body_header %}{% endblock %}</h1>
+                {% if alert_success %}
+                    <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        {{ alert_success }}
+                    </div>
+                {% endif %}
+                {% if alert_danger %}
+                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        {{ alert_danger }}
+                    </div>
+                {% endif %}
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+        {% include "aboutus_modal.html" %}
+</body>
+</html>

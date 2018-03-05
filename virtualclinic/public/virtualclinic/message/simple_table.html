@@ -1,0 +1,58 @@
+{% load app_filters %}
+<table id="message-simple-table" class="table table-hover table-striped table-bordered">
+    <thead>
+        <th>From</th>
+        <th>Subject</th>
+        <th>Options</th>
+        <th style="display: none">TimeStamp</th>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.sender_profile }}</td>
+                <td>{{ message.header }}</td>
+                <td>
+                    <script type="text/javascript">
+                        function proxy{{ message.pk }}() {
+                            configureModal(
+                                '{{ message.sender.pk }}',
+                                '{{ message.header|sanitizeJS }}',
+                                '{{ message.target.profile|sanitizeJS }}',
+                                '{{ message.body|sanitizeJS }}'
+                            );
+                        };
+                    </script>
+                    <form id="confirm-modal-action" action="./" method="post">
+                        {% csrf_token %}
+                        <input id="confirm-modal-hidden" type="hidden" name="pk" value="{{ message.pk }}">
+                        <a class="btn btn-success btn-sm" href="/message/new/?pk={{ message.sender.pk }}" role="button">Reply</a>
+                        <button onclick="proxy{{ message.pk }}()" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#read-modal">Read</button>
+                        {% if message.sender == user.account and message.sender_deleted %}
+                        {% elif message.target == user.account and message.target_deleted %}
+                        {% else %}
+                            <input id="confirm-modal-submit" class="btn btn-danger btn-sm" type="submit" name="delete" value="Archive">
+                        {% endif %}
+                    </form>
+                </td>
+                <td style="display:none;">{{ message.timestamp }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript">
+    function configureModal(pk, header, target, sender, body) {
+        document.getElementById('read-modal-title').innerHTML = header;
+        document.getElementById('read-modal-body').innerHTML = '<p>From: ' .concat(sender,'<br>To:', target,'</p><hr><p>', body,'</p>');
+        document.getElementById('read-modal-link').href = 'message/new?pk=' .concat(pk);
+    }
+    $(document).ready(function () {
+        $('#message-simple-table').DataTable({
+            "order":[[3,"desc"]],
+            "columnDefs":[
+                {"orderable":false,"targets":[0,1,2]},
+                {"searchable":false,"targets":[2,3]},
+                {"visible":false, "targets":3}
+            ]
+        });
+    });
+</script>
