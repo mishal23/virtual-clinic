@@ -55,7 +55,7 @@ def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
         request,
-        [Account.ACCOUNT_DOCTOR,Account.ACCOUNT_PATIENT]
+        [Account.ACCOUNT_DOCTOR,Account.ACCOUNT_PATIENT,Account.ACCOUNT_CHEMIST]
     )
     if authentication_result is not None:
         return authentication_result
@@ -81,3 +81,39 @@ def list_view(request):
         prescriptions = Prescription.objects.all()
     template_data['query'] = prescriptions.order_by('date')
     return render(request,'virtualclinic/prescription/list.html',template_data)
+
+
+def update_view(request):
+    # Authentication check
+    authentication_result = views.authentication_check(request, None, ['pk'])
+    if authentication_result is not None:
+        return authentication_result
+    # Validation check. Make sure a prescription exists for given pk.
+    pk = request.GET['pk']
+    try:
+        prescription = Prescription.objects.get(pk=pk)
+    except Exception:
+        request.session['alert_danger'] = "The requested prescription does not exist"
+        return HttpResponseRedirect('/error/denied')
+    # Get the template data from the session
+    template_data = views.parse_session(
+        request,
+        {
+            'form_button':"Update Prescription",
+            'form_action':"?pk="+pk,
+            'prescription':prescription
+        })
+    # Proceed with rest of view
+    request.POST._mutable = True
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST)
+        if form.is_valid():
+            form.assign(prescription)
+            prescription.save()
+            logger.log(Action.ACTION_PRESCRIPTION, 'Prescription Updated', request.user.account)
+            template_data['alert_success'] = "Prescription has been updated"
+            template_data['form'] = form
+    else:
+        form = PrescriptionForm(prescription.get_populated_fields())
+    template_data['form'] = form
+    return render(request,'virtualclinic/prescription/update.html', template_data)

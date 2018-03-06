@@ -214,6 +214,9 @@ class EmployeeRegistrationForm(BasicForm):
     password_second = forms.CharField(label='', min_length=1, max_length=50, widget=forms.PasswordInput())
     setup_field(password_second, "Enter password again")
     employee = forms.ChoiceField(required=False, choices=Account.EMPLOYEE_TYPES)
+    SPECIALITY_CHOICES = (("None","--"),("ORTH","Ortho"),("GYANO","Gyano"))
+    speciality = forms.ChoiceField(required=False, choices = SPECIALITY_CHOICES)
+    setup_field(speciality, "Enter speciality here")
     setup_field(employee)
 
     def clean(self):

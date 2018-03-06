@@ -14,6 +14,14 @@ IND_STATES = (
 )
 
 
+class Speciality(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+        
+
 class Location(models.Model):
     city = models.CharField(max_length=50)
     zip = models.CharField(max_length=50)
@@ -98,17 +106,20 @@ class Account(models.Model):
     ACCOUNT_DOCTOR = 20
     ACCOUNT_ADMIN = 30
     ACCOUNT_LAB = 40
+    ACCOUNT_CHEMIST = 50
     ACCOUNT_TYPES = (
         (ACCOUNT_UNKNOWN, "Unknown"),
         (ACCOUNT_PATIENT, "Patient"),
         (ACCOUNT_DOCTOR, "Doctor"),
         (ACCOUNT_ADMIN, "Admin"),
-        (ACCOUNT_LAB, "Lab")
+        (ACCOUNT_LAB, "Lab"),
+        (ACCOUNT_CHEMIST, "Chemist"),
     )
     EMPLOYEE_TYPES = (
         (ACCOUNT_DOCTOR, "Doctor"),
         (ACCOUNT_ADMIN, "Admin"),
         (ACCOUNT_LAB, "Lab"),
+        (ACCOUNT_CHEMIST, "Chemist"),
     )
 
     @staticmethod

@@ -84,7 +84,7 @@
                         {% if user.account.role == 40 or user.account.role == 10 or user.account.role == 30%}
                             <li class="{% block sidebar_medtest %}{% endblock %}"><a href="/medtest/list">Medical Tests<i class="pull-right fa fa-flask"></i></a></li>
                         {% endif %}
-                        {% if user.account.role == 10 or user.account.role == 20 %}
+                        {% if user.account.role == 10 or user.account.role == 20 or user.account.role == 50 %}
                             <li class="{% block sidebar_prescription %}{% endblock %}"><a href="/prescription/list/">Prescriptions<i class="pull-right fa fa-file-text"></i></a></li>
                         {% endif %}
                         {% if user.account.role == 30 %}

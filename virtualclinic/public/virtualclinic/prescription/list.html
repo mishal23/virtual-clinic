@@ -41,13 +41,17 @@
                                 <script type="text/javascript">
                                     function proxy{{ prescription.pk }}() {
                                         configureModal({% autoescape on %}
-                                            {{ prescription.pk }}
+                                            '{{ prescription.pk }}'
                                             '{{ prescription.medication }}',
                                             '{{ prescription.patient.profile }}'
                                         {% endautoescape %});
                                     }
                                 </script>
                                 <button onclick="proxy{{ prescription.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#form-modal">Delete</button>
+                                <a class="btn btn-warning btn-sm" href="/prescription/update/?pk={{ prescription.pk }}" role="button">Update</a>
+                            {% endif %}
+                            {% if user.account.role == 50 %}
+                                <a class="btn btn-warning btn-sm" href="/prescription/update/?pk={{ prescription.pk }}" role="button">Update</a>
                             {% endif %}
                         {% endif %}
                     </td>

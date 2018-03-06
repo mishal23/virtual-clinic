@@ -45,6 +45,7 @@ urlpatterns = [
 
     url(r'^prescription/create/$',views_prescription.create_view,name='prescription/create'),
     url(r'^prescription/list/$',views_prescription.list_view,name='prescription/list'),
+    url(r'^prescription/update/$', views_prescription.update_view, name='prescription/update'),
 
     url(r'^medicalinfo/list/$',views_medicalinfo.list_view,name='medicalinfo/list'),
     url(r'^medicalinfo/update/$',views_medicalinfo.update_view,name='medicalinfo/update'),
