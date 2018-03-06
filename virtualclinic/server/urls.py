@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/users/$',views_admin.users_view,name='admin/users'),
     url(r'^admin/activity/$',views_admin.activity_view,name='admin/activity'),
     url(r'^admin/statistics/$',views_admin.statistic_view,name='admin/statistics'),
+    url(r'^admin/add_speciality/$',views_admin.add_speciality,name='admin/add_speciality'),
     url(r'^admin/createemployee/$',views_admin.createemployee_view,name='admin/createemployee'),
     url(r'^admin/add_hospital/$',views_admin.add_hospital_view,name='admin/add_hospital'),
     url(r'^admin/import/$',views_admin.csv_import_view,name='admin/import'),

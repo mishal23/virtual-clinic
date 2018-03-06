@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.utils import IntegrityError
 
-from server.forms import EmployeeRegistrationForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
-from server.models import Account, Action, Hospital, Location, Statistics
+from server.forms import SpecialityForm, EmployeeRegistrationForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
+from server.models import Speciality, Account, Action, Hospital, Location, Statistics
 from server import logger
 from server import views
 
@@ -42,6 +42,45 @@ def activity_view(request):
     # Parse search sorting
     template_data['query'] = Action.objects.all().order_by('-timePerformed')
     return render(request,'virtualclinic/admin/activity.html',template_data)
+
+
+# Do speciality view
+def speciality_view(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+
+    return render(request,'virtualclinic/admin/',template_data)
+
+def add_speciality(request):
+    # Authentication check
+    authentication_result = views.authentication_check(request,[Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: 
+        return authentication_result
+    # Get template data from the session
+    template_data = views.parse_session(
+        request,
+        {'form_button' : "Add Speciality"}
+    )
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        form = SpecialityForm(request.POST)
+        if form.is_valid():
+            speciality = Speciality(
+                name = form.cleaned_data['name'],
+                description = form.cleaned_data['description']
+            )
+            speciality.save()
+            form = SpecialityForm()     # Clean the form when page is redisplayed
+            template_data['alert_success'] = "Successfully added the Speciality!"
+            logger.log(Action.ACTION_ADMIN, 'Admin added '+ speciality.name, speciality.description)
+    else:
+        form = SpecialityForm()
+    template_data['form'] = form
+    return render(request,'virtualclinic/admin/add_speciality.html', template_data)
 
 
 def add_hospital_view(request):
