@@ -29,3 +29,13 @@
     {% endfor %}
     <input class="btn btn-primary col-sm-12" type="submit" value="{{ form_button }}" />
 </form>
+<script type="text/javascript">
+    $(function () {
+        $("#id_employee").click(function () {
+           if(this.value != 20) {
+               $('label[for="id_speciality"]').hide();
+               $("#id_speciality ").hide();
+           }
+        });
+    });
+</script>

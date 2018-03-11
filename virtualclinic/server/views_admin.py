@@ -1,7 +1,7 @@
 from csv import QUOTE_MINIMAL, writer
 import re
 
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.utils import IntegrityError
 
@@ -11,10 +11,33 @@ from server import logger
 from server import views
 
 
+def parse_speciality_delete(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None:
+        return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        if 'delete' in request.POST and 'pk' in request.POST:
+            pk = request.POST['pk']
+            try:
+                speciality = Speciality.objects.get(pk=pk)
+            except Exception:
+                template_data['alert_danger'] = "Unable to cancel the speciality. Please try again later."
+                return
+            speciality.delete()
+            logger.log(Action.ACTION_ADMIN, 'Speciality cancelled', request.user.account)
+            template_data['alert_success'] = "The speciality has been deleted."
+            return HttpResponseRedirect('/admin/speciality/')
+
+
 def users_view(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
-    if authentication_result is not None: return authentication_result
+    if authentication_result is not None:
+        return authentication_result
     # Get the template data from the session
     template_data = views.parse_session(request)
     # Proceed with the rest of the view
@@ -25,7 +48,7 @@ def users_view(request):
         if account is not None:
             account.role = role
             account.save()
-            logger.log(Action.ACTION_ADMIN,'Admin modified ' + account.user.username + "'s role", request.user.account)
+            logger.log(Action.ACTION_ADMIN, 'Admin modified ' + account.user.username + "'s role", request.user.account)
             template_data['alert_success'] = "Updated" + account.user.username + "'s role!"
     # Parse search sorting
     template_data['query'] = Account.objects.all().order_by('-role')
@@ -44,43 +67,45 @@ def activity_view(request):
     return render(request,'virtualclinic/admin/activity.html',template_data)
 
 
-# Do speciality view
-def speciality_view(request):
+def view_speciality(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
     template_data = views.parse_session(request)
     # Proceed with the rest of the view
+    template_data['query'] = Speciality.objects.all()
+    return render(request, 'virtualclinic/admin/speciality.html', template_data)
 
-    return render(request,'virtualclinic/admin/',template_data)
 
 def add_speciality(request):
     # Authentication check
-    authentication_result = views.authentication_check(request,[Account.ACCOUNT_ADMIN])
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
     if authentication_result is not None: 
         return authentication_result
     # Get template data from the session
     template_data = views.parse_session(
         request,
-        {'form_button' : "Add Speciality"}
+        {'form_button': "Add Speciality"}
     )
+    #parse_speciality_delete(request, template_data)  # parse appointment cancelling
     # Proceed with the rest of the view
     if request.method == 'POST':
         form = SpecialityForm(request.POST)
         if form.is_valid():
             speciality = Speciality(
-                name = form.cleaned_data['name'],
-                description = form.cleaned_data['description']
+                name=form.cleaned_data['name'],
+                description=form.cleaned_data['description']
             )
             speciality.save()
             form = SpecialityForm()     # Clean the form when page is redisplayed
             template_data['alert_success'] = "Successfully added the Speciality!"
-            logger.log(Action.ACTION_ADMIN, 'Admin added '+ speciality.name, speciality.description)
+            logger.log(Action.ACTION_ADMIN, 'Admin added ' + speciality.name, request.user.account)
+            return HttpResponseRedirect('/admin/speciality')
     else:
         form = SpecialityForm()
     template_data['form'] = form
-    return render(request,'virtualclinic/admin/add_speciality.html', template_data)
+    return render(request, 'virtualclinic/admin/add_speciality.html', template_data)
 
 
 def add_hospital_view(request):
@@ -135,7 +160,8 @@ def createemployee_view(request):
                 form.cleaned_data['password_first'],
                 form.cleaned_data['firstname'],
                 form.cleaned_data['lastname'],
-                form.cleaned_data['employee']
+                form.cleaned_data['employee'],
+                form.cleaned_data['speciality']
             )
             logger.log(Action.ACTION_ADMIN, 'Admin registered '+ user.username, request.user.account)
             request.session['alert_success'] = "Successfully created new employee account"
@@ -151,7 +177,7 @@ def statistic_view(request):
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
     if authentication_result is not None: return authentication_result
     # Get the template data from the session
-    template_data = views.parse_session(request,{'form_button':"Get Statistics"})
+    template_data = views.parse_session(request, {'form_button': "Get Statistics"})
     # Proceed with the rest of the view
     default = {}
     request.POST._mutable = True
@@ -199,6 +225,7 @@ def statistic_view(request):
     template_data['form'] =form
 
     return render(request,'virtualclinic/admin/statistics.html', template_data)
+
 
 def csv_import_view(request):
     # Authentication check.

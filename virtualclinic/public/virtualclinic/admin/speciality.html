@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Speciality{% endblock %}
+{% block sidebar_admin_speciality %}active{% endblock %}
+{% block body_header %}
+    View Speciality
+    <br>
+    <a class="btn btn-success btn-sm" href="/admin/add_speciality/" role="button">Add Speciality</a>
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Speciality</th>
+            <th>Description</th>
+            <th>Option</th>
+        </thead>
+        <tbody>
+            {% for speciality in query %}
+                <tr>
+                    <td>{{ speciality.name }}</td>
+                    <td>{{ speciality.description }}</td>
+                    <td><button onclick="proxy{{ speciality.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirm-modal">Delete</button></td>
+                <script type="text/javascript">
+                    function proxy{{ speciality.pk }}() {
+                        configureModal(
+                            {{ speciality.pk }},
+                            '{{ speciality.name }}'
+                        );
+                    };
+                </script>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "virtualclinic/admin/speciality_modal.html" %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+        });
+        function configureModal(pk, name) {
+            document.getElementById('confirm-modal-body').innerHTML = 'Are you sure you want to delete the speciality '.concat(name, '?');
+            document.getElementById('confirm-modal-hidden').value = pk;
+        }
+    </script>
+{% endblock %}

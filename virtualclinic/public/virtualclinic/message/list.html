@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}
+    View Messages
+{% endblock %}
+{% block sidebar_message %}
+    active
+{% endblock %}
+{% block body_header %}
+    View Messages
+    <br>
+    <a class="btn btn-success btn-sm" href="/message/new/" role="button">New message</a>
+{% endblock %}
+{% block body %}
+    <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#messages-received" id="messages-received" role="tab" data-toggle="tab"><i class="fa fa-arrow-circle-down"></i> Received messages</a></li>
+            <li role="presentation"><a href="#messages-sent" id="messages-sent" role="tab" data-toggle="tab"><i class="fa fa-arrow-circle-up"></i> Sent messages</a></li>
+            <li role="presentation"><a href="#messages-sent" id="messages-deleted" role="tab" data-toggle="tab"><i class="fa fa-archive"></i> Archived messages</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active">
+                <br>
+                {% include "virtualclinic/message/detailed_table.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

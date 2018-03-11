@@ -4,7 +4,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment
+from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality
+
 
 def validate_username_available(username):
     """ validator that throws an error if the given username already exists."""
@@ -12,11 +13,13 @@ def validate_username_available(username):
     if User.objects.filter(username__icontains=username).count():
         raise forms.ValidationError("This email is already registered")
 
+
 def validate_username_exists(username):
     """ validator that throws an error if the given username doesn't exists."""
 
     if not User.objects.filter(username__icontains=username).count():
         raise forms.ValidationError("This email does not exist")
+
 
 def validate_birthday(birthday):
     """ validator to check if date is realistic """
@@ -73,7 +76,7 @@ class LoginForm(BasicForm):
         if username and password:
             user = authenticate(username=username, password=password)
             if user is None:
-                self.mark_error('password','Incorrect password')
+                self.mark_error('password', 'Incorrect password')
         return cleaned_data
 
 
@@ -144,8 +147,10 @@ class ProfileForm(BasicForm):
     primaryCareDoctor = forms.ModelChoiceField(label="Primary Care Doctor", required=False,
                                                queryset=Account.objects.filter(role=Account.ACCOUNT_DOCTOR))
     setup_field(primaryCareDoctor)
+    speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
+    setup_field(speciality)
 
-    def assign(self,profile):
+    def assign(self, profile):
         profile.firstname = self.cleaned_data['firstname']
         profile.lastname = self.cleaned_data['lastname']
         profile.sex = self.cleaned_data['sex']
@@ -155,6 +160,7 @@ class ProfileForm(BasicForm):
         profile.allergies = self.cleaned_data['allergies']
         profile.prefHospital = self.cleaned_data['prefHospital']
         profile.primaryCareDoctor = self.cleaned_data['primaryCareDoctor']
+        profile.speciality = self.cleaned_data['speciality']
 
 
 class AppointmentForm(BasicForm):
@@ -198,15 +204,15 @@ class AppointmentForm(BasicForm):
         endTime = cleaned_data.get('endTime')
         if startTime and endTime:
             if endTime<=startTime:
-                self.mark_error('endTime','The appointment end time must come after the start time')
+                self.mark_error('endTime', 'The appointment end time must come after the start time')
         return cleaned_data
 
 
 class SpecialityForm(BasicForm):
     name = forms.CharField(label='Name of speciality',max_length=50)
-    setup_field(name,'Enter speciality name here')
+    setup_field(name, 'Enter speciality name here')
     description = forms.CharField(label='Name of description')
-    setup_field(description,'Enter speciality description here')
+    setup_field(description, 'Enter speciality description here')
 
 
 class EmployeeRegistrationForm(BasicForm):
@@ -222,10 +228,8 @@ class EmployeeRegistrationForm(BasicForm):
     setup_field(password_second, "Enter password again")
     employee = forms.ChoiceField(required=False, choices=Account.EMPLOYEE_TYPES)
     setup_field(employee)
-    SPECIALITY_CHOICES = (("None","--"),("ORTH","Ortho"),("GYANO","Gyano"))
-    speciality = forms.ChoiceField(required=False, choices = SPECIALITY_CHOICES)
-    setup_field(speciality, "Enter speciality here")
-    
+    speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
+    setup_field(speciality)
 
     def clean(self):
         """
@@ -236,8 +240,9 @@ class EmployeeRegistrationForm(BasicForm):
         password_first = cleaned_data.get('password_first')
         password_second = cleaned_data.get('password_second')
         if password_first and password_second and password_first!=password_second:
-            self.mark_error('password_second','Passwords do not match')
+            self.mark_error('password_second', 'Passwords do not match')
         return cleaned_data
+
 
 class PrescriptionForm(BasicForm):
     patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
@@ -255,6 +260,7 @@ class PrescriptionForm(BasicForm):
     refill = forms.IntegerField()
     setup_field(refill,"Enter number of refills")
 
+
 class HospitalForm(BasicForm):
     city = forms.CharField(max_length=50)
     setup_field(city,"Enter hospital's city")
@@ -266,6 +272,7 @@ class HospitalForm(BasicForm):
     setup_field(name,"Enter hospitals name")
     phone = forms.CharField(max_length=10)
     setup_field(phone, "Enter hospitals phone number")
+
 
 class MedTestForm(BasicForm):
     name = forms.CharField(max_length=50)
@@ -327,6 +334,7 @@ class MedTestForm(BasicForm):
             image5 = self.cleaned_data['image5'],
         )
 
+
 class MedTestDisplayForm(BasicForm):
     name = forms.CharField(max_length=50)
     setup_field(name)
@@ -354,6 +362,7 @@ class MedTestDisplayForm(BasicForm):
         medtest.patient = self.cleaned_data['patient']
         medtest.private = self.cleaned_data['private']
         medtest.completed = self.cleaned_data['completed']
+
 
 class MedicalInfoForm(BasicForm):
     account = forms.ModelChoiceField(label="Patient", queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
@@ -383,8 +392,27 @@ class MedicalInfoForm(BasicForm):
         medicalInfo.stroke = self.cleaned_data['stroke']
         medicalInfo.comments = self.cleaned_data['comments']
 
+
+class MessageForm(BasicForm):
+    target = forms.ModelChoiceField(queryset=Account.objects.all(), label="To")
+    setup_field(target)
+    header = forms.CharField(max_length=300)
+    setup_field(header,"Message header")
+    body = forms.CharField(max_length=1000)
+    setup_field(body,"Message body")
+
+    def generate(self, sender):
+        return Message(
+            target=self.cleaned_data['target'],
+            sender=sender,
+            header=self.cleaned_data['header'],
+            body=self.cleaned_data['body'],
+        )
+
+
 class ImportForm(forms.Form):
     upload = forms.FileField(required=True, widget=forms.FileInput())
+
 
 class ExportForm(forms.Form):
     CHOICES = (
@@ -392,6 +420,7 @@ class ExportForm(forms.Form):
         ('users','Download all users'),
     )
     export = forms.ChoiceField(required=True,widget=forms.RadioSelect, choices=CHOICES)
+
 
 class StatisticsForm(BasicForm):
     startDate = forms.DateTimeField(required=True,label="Start Time")

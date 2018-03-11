@@ -30,7 +30,7 @@ def authentication_check(request, required_roles=None, required_GET=None):
     # Validation check. Make sure this page has any required GET keys
     if required_GET:
         for key in required_GET:
-            if key is not request.GET:
+            if key not in request.GET:
                 request.session['alert_danger'] = "Looks like you tried to use a malformed URL"
                 return HttpResponseRedirect('/error/denied/')
 
@@ -53,7 +53,7 @@ def parse_session(request, template_data=None):
     return template_data
 
 
-def register_user(email,password,firstname,lastname,role):
+def register_user(email, password, firstname, lastname, role, speciality):
     user = User.objects.create_user(
         email.lower(),
         email.lower(),
@@ -62,6 +62,7 @@ def register_user(email,password,firstname,lastname,role):
     profile = Profile(
         firstname=firstname,
         lastname=lastname,
+        speciality=speciality,
     )
     profile.save()
     account = Account(

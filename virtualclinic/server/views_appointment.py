@@ -49,7 +49,7 @@ def calendar_view(request):
 
 def update_view(request):
     # Authentication check
-    authentication_result = views.authentication_check(request, ['pk'])
+    authentication_result = views.authentication_check(request, None, ['pk'])
     if authentication_result is not None:
         return authentication_result
     # Validation check. Make sure appointment exists for given pk
@@ -82,7 +82,7 @@ def update_view(request):
                     ~Q(pk=appointment.pk),
                     Q(status="Active"),
                     Q(doctor=appointment.doctor) | Q(patient=appointment.patient),
-                    Q(startTime__range=(appointment.startTime,appointment.endTime)) | Q(endTime__range=(appointment.startTime,appointment.endTime))).count():
+                    Q(startTime__range=(appointment.startTime, appointment.endTime)) | Q(endTime__range=(appointment.startTime,appointment.endTime))).count():
                 form.mark_error('startTime', 'This time conflicts with another appointment.')
                 form.mark_error('endTime', 'This time conflicts with another appointment.')
             else:
@@ -136,7 +136,7 @@ def create_view(request):
             if Appointment.objects.filter(
                     Q(status="Active"),
                     Q(doctor=appointment.doctor) | Q(patient=appointment.patient),
-                    Q(startTime__range=(appointment.startTime,appointment.endTime)) | Q(endTime__range=(appointment.startTime,appointment.endTime))).count():
+                    Q(startTime__range=(appointment.startTime, appointment.endTime)) | Q(endTime__range=(appointment.startTime,appointment.endTime))).count():
                 form.mark_error('startTime', 'this time conflicts with another appointment')
                 form.mark_error('endTime', 'this time conflicts with another appointment')
             else:
@@ -160,4 +160,4 @@ def create_view(request):
     elif request.user.account.role == Account.ACCOUNT_DOCTOR:
         form.disable_field('doctor')
     template_data['form'] = form
-    return render(request,'virtualclinic/appointment/create.html',template_data)
+    return render(request, 'virtualclinic/appointment/create.html',template_data)

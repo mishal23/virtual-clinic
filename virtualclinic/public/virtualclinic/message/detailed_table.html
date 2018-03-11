@@ -1,0 +1,109 @@
+{% load app_filters %}
+<table id="message-detailed-table" class="table table-hover table-striped table-bordered">
+    <thead>
+        <th>To</th>
+        <th>From</th>
+        <th>Subject</th>
+        <th>Timestamp</th>
+        <th>Options</th>
+        <th style="display:none;">Deleted</th>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.target.profile }}</td>
+                <td>{{ message.sender.profile }}</td>
+                <td>{{ message.header }}</td>
+                <td data-dateformat="MMMM DD, YYYY, hh:mm a">{{ message.timestamp }}</td>
+                <td>
+                    <script type="text/javascript">
+                        function proxy{{ message.pk }}() {
+                            configureModal(
+                                '{{ message.sender.pk }}',
+                                '{{ message.header|sanitizeJS }}',
+                                '{{ message.target.profile|sanitizeJS }}',
+                                '{{ message.sender.profile|sanitizeJS }}',
+                                '{{ message.body|sanitizeJS }}'
+                            );
+                        };
+                    </script>
+                    <form id="confirm-modal-action" action="./" method="post">{% csrf_token %}
+                        <input id="confirm-modal-hidden" type="hidden" name="pk" value="{{ message.pk }}">
+                        <a class="btn btn-success btn-sm" href="/message/new/?pk={{ message.sender.pk }}" role="button">Reply</a>
+                        <button onclick="proxy{{ message.pk }}()" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#read-modal">Read</button>
+                        {% if message.sender == user.account and message.sender_deleted %}
+                        {% elif message.target == user.account and message.target_deleted %}
+                        {% else %}
+                            <input id="confirm-modal-submit" class="btn btn-danger btn-sm" type="submit" name="delete" value="Archive"/>
+                        {% endif %}
+                    </form>
+                </td>
+                <td style="display: none;">
+                    {% if message.sender == user.account %}
+                        {{ message.sender_deleted }}
+                    {% else %}
+                        {{ message.target_deleted }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% include "virtualclinic/message/read_modal.html" %}
+<script type="text/javascript">
+    var virtualclinic = {};
+    virtualclinic.received = [];
+    virtualclinic.sent = [];
+    virtualclinic.deleted = [];
+    function configureModal(pk, header, target, sender, body){
+        document.getElementById('read-modal-title').innerHTML = header;
+        document.getElementById('read-modal-body').innerHTML = '<p>From: '.concat(sender, '<br>To: ', target, '</p><hr><p>', body, '</p>');
+        document.getElementById('read-modal-link').href = '/message/new/?pk='.concat(pk);
+    }
+    function displayDeleted() {
+        var table = $('#message-detailed-table').DataTable();
+        table.rows().remove();
+        table.rows.add(virtualclinic.sent).draw();
+    }
+    $(document).ready(function() {
+        $('#message-detailed-table').DataTable({
+            "order": [[ 3, "desc" ]],
+            "columnDefs": [
+                { "orderable": false, "targets": [ 4, 5 ] },
+                { "searchable": false, "targets": [ 4, 5 ] },
+                { "visible": false, "targets": 5 }
+            ]
+        });
+        $('#message-detailed-table').DataTable().rows().every( function () {
+            if(this.data()[0] == '{{ account }}' && this.data()[5] == 'False') {
+                virtualclinic.received.push(this.data());
+            }
+            if(this.data()[1] == '{{ account }}' && this.data()[5] == 'False') {
+                virtualclinic.sent.push(this.data());
+            }
+            if(this.data()[5] == 'True') {
+                virtualclinic.deleted.push(this.data());
+            }
+        });
+        function defaultView() {
+            var table = $('#message-detailed-table').DataTable();
+            table.rows().remove();
+            table.rows.add(virtualclinic.received).draw();
+        }
+        $('#messages-received').click(function (e) {
+            defaultView();
+        });
+        $('#messages-sent').click(function (e) {
+            var table = $('#message-detailed-table').DataTable();
+            table.rows().remove();
+            table.rows.add(virtualclinic.sent).draw();
+        });
+        $('#messages-deleted').click(function (e) {
+            var table = $('#message-detailed-table').DataTable();
+            table.rows().remove();
+            table.rows.add(virtualclinic.deleted).draw();
+        });
+        defaultView();
+    });
+</script>

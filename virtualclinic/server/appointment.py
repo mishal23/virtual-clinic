@@ -7,6 +7,7 @@ from server import message
 from server.views import sanitize_js
 from server.message import datetime_strftime
 
+
 def parse_appointments(request):
     if request.user.account.role == Account.ACCOUNT_PATIENT:
         appointments = Appointment.objects.filter(status="Active", patient=request.user.account)
@@ -45,6 +46,7 @@ def parse_appointments(request):
             body.append("},")
         return mark_safe('\n'.join(body)[:-1])
     return mark_safe("")
+
 
 def parse_appointment_cancel(request, template_data):
     if request.method == 'POST':

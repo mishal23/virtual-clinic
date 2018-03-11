@@ -54,8 +54,8 @@ class Hospital(models.Model):
 
 class Profile(models.Model):
     GENDER = (
-        ('M',"Male"),
-        ('F',"Female"),
+        ('M', "Male"),
+        ('F', "Female"),
     )
 
     @staticmethod
@@ -67,13 +67,14 @@ class Profile(models.Model):
 
     firstname = models.CharField(blank=True, max_length=50)
     lastname = models.CharField(blank=True, max_length=50)
-    sex = models.CharField(blank=True,max_length=1,choices=GENDER)
-    birthday = models.DateField(default=date(1000,1,1))
-    phone = models.CharField(blank=True,max_length=10)
+    sex = models.CharField(blank=True, max_length=1, choices=GENDER)
+    birthday = models.DateField(default=date(1000, 1, 1))
+    phone = models.CharField(blank=True, max_length=10)
     allergies = models.CharField(blank=True, max_length=250)
     created = models.DateTimeField(auto_now_add=True)
-    prefHospital = models.ForeignKey(Hospital,null=True,related_name="profile_prefhospital", on_delete = models.CASCADE)
-    primaryCareDoctor = models.ForeignKey('Account',null=True, related_name="profile_primarycaredoctor", on_delete = models.CASCADE)
+    prefHospital = models.ForeignKey(Hospital, null=True, related_name="profile_prefhospital", on_delete = models.CASCADE)
+    primaryCareDoctor = models.ForeignKey('Account', null=True, related_name="profile_primarycaredoctor", on_delete = models.CASCADE)
+    speciality = models.CharField(blank=True, max_length=250)
 
     def get_populated_fields(self):
         """To collect form data"""
@@ -148,7 +149,7 @@ class Account(models.Model):
         return 0
 
     role = models.IntegerField(default=0, choices=ACCOUNT_TYPES)
-    profile = models.OneToOneField(Profile,on_delete = models.CASCADE)
+    profile = models.OneToOneField(Profile, on_delete = models.CASCADE)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
 
     def __str__(self):
@@ -318,8 +319,8 @@ class MedicalTest(models.Model):
     date = models.DateField()
     hospital = models.ForeignKey(Hospital,on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
-    doctor = models.ForeignKey(Account, related_name="medicaltest_doctor",on_delete = models.CASCADE)
-    patient = models.ForeignKey(Account, related_name="medicaltest_patient",on_delete = models.CASCADE)
+    doctor = models.ForeignKey(Account, related_name="medicaltest_doctor", on_delete = models.CASCADE)
+    patient = models.ForeignKey(Account, related_name="medicaltest_patient", on_delete = models.CASCADE)
     private = models.BooleanField(default=True)
     completed = models.BooleanField()
     image1 = models.FileField(blank=True, null=True, upload_to='medicaltests/%Y/%m/%d')
@@ -331,15 +332,15 @@ class MedicalTest(models.Model):
     def get_populated_fields(self):
         """To collect form data"""
         fields = {
-            'name':self.name,
-            'date':self.date,
-            'hospital':self.hospital,
-            'description':self.description,
-            'doctor':self.doctor,
-            'patient':self.patient,
-            'private':self.private,
-            'completed':self.completed,
-            'image1':self.image1,
+            'name': self.name,
+            'date': self.date,
+            'hospital': self.hospital,
+            'description': self.description,
+            'doctor': self.doctor,
+            'patient': self.patient,
+            'private': self.private,
+            'completed': self.completed,
+            'image1': self.image1,
             'image2': self.image2,
             'image3': self.image3,
             'image4': self.image4,

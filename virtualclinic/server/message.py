@@ -30,6 +30,7 @@ def parse_message_archive(request, template_data):
             logger.log(Action.ACTION_MESSAGE, 'Message Archived', request.user.account)
             template_data['alert_success'] = "The message was archived."
 
+
 def send_message(sender, target, header, body):
     message = Message(
         target=target,
