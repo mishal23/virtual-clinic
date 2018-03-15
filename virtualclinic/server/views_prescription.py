@@ -51,6 +51,7 @@ def create_view(request):
     template_data['form'] = form
     return render(request, 'virtualclinic/prescription/create.html', template_data)
 
+
 def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -99,9 +100,9 @@ def update_view(request):
     template_data = views.parse_session(
         request,
         {
-            'form_button':"Update Prescription",
-            'form_action':"?pk="+pk,
-            'prescription':prescription
+            'form_button': "Update Prescription",
+            'form_action': "?pk="+pk,
+            'prescription': prescription
         })
     # Proceed with rest of view
     request.POST._mutable = True
@@ -116,4 +117,4 @@ def update_view(request):
     else:
         form = PrescriptionForm(prescription.get_populated_fields())
     template_data['form'] = form
-    return render(request,'virtualclinic/prescription/update.html', template_data)
+    return render(request, 'virtualclinic/prescription/update.html', template_data)

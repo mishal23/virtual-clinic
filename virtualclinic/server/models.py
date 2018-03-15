@@ -262,7 +262,7 @@ class Notification(models.Model):
 
 
 class Prescription(models.Model):
-    patient = models.ForeignKey(Account,related_name="prescription_patient",on_delete = models.CASCADE)
+    patient = models.ForeignKey(Account, related_name="prescription_patient",on_delete = models.CASCADE)
     doctor = models.ForeignKey(Account, related_name="prescription_doctor",on_delete = models.CASCADE)
     date = models.DateField()
     medication = models.CharField(max_length=100)
@@ -270,6 +270,20 @@ class Prescription(models.Model):
     instruction = models.CharField(max_length=200)
     refill = models.IntegerField()
     active = models.BooleanField(default=True)
+
+    def get_populated_fields(self):
+        """used to collect form data"""
+        fields = {
+            'patient': self.patient,
+            'doctor': self.doctor,
+            'date': self.date,
+            'medication': self.medication,
+            'strength': self.strength,
+            'instruction': self.instruction,
+            'refill': self.refill,
+            'active': self.active,
+        }
+        return fields
 
 
 class MedicalInfo(models.Model):
