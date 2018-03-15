@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d6c612f-f3c8-4654-8c94-3ca076f56877" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/virtualclinic/.idea/workspace.xml" afterPath="$PROJECT_DIR$/virtualclinic/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/virtualclinic/db.sqlite3" afterPath="$PROJECT_DIR$/virtualclinic/db.sqlite3" />
-      <change beforePath="$PROJECT_DIR$/virtualclinic/server/models.py" afterPath="$PROJECT_DIR$/virtualclinic/server/models.py" />
-      <change beforePath="$PROJECT_DIR$/virtualclinic/server/views_prescription.py" afterPath="$PROJECT_DIR$/virtualclinic/server/views_prescription.py" />
+      <change beforePath="$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py" afterPath="$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,11 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/virtualclinic/server/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="428">
               <caret line="287" column="0" lean-forward="true" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="83" column="19" lean-forward="false" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -80,7 +86,6 @@
         <option value="$PROJECT_DIR$/virtualclinic/views_prescription.py" />
         <option value="$PROJECT_DIR$/virtualclinic/server/views_medtest.ipynb" />
         <option value="$PROJECT_DIR$/virtualclinic/virtualclinic/urls.py" />
-        <option value="$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py" />
         <option value="$PROJECT_DIR$/virtualclinic/server/views_profile.py" />
         <option value="$PROJECT_DIR$/virtualclinic/server/views_home.py" />
         <option value="$PROJECT_DIR$/virtualclinic/server/views.py" />
@@ -114,6 +119,7 @@
         <option value="$PROJECT_DIR$/virtualclinic/public/base.html" />
         <option value="$PROJECT_DIR$/virtualclinic/server/views_prescription.py" />
         <option value="$PROJECT_DIR$/virtualclinic/server/models.py" />
+        <option value="$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py" />
       </list>
     </option>
   </component>
@@ -427,13 +433,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-682">
-          <caret line="57" column="25" lean-forward="false" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/virtualclinic/public/aboutus_modal.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -604,6 +603,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="428">
           <caret line="287" column="0" lean-forward="true" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualclinic/virtualclinic/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="83" column="19" lean-forward="false" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="19" />
           <folding />
         </state>
       </provider>
