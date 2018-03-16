@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality
+from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality, APPOINTMENT_TYPE
 
 
 def validate_username_available(username):
@@ -172,6 +172,8 @@ class AppointmentForm(BasicForm):
     setup_field(doctor)
     patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
     setup_field(patient)
+    appointment_type = forms.ChoiceField(choices=APPOINTMENT_TYPE)
+    setup_field(appointment_type)
     startTime = forms.DateTimeField(label="Start Time")
     setup_field(startTime, "Enter as YYYY-MM-DD HH:MM")
     endTime = forms.DateTimeField(label="End Time")
@@ -182,17 +184,19 @@ class AppointmentForm(BasicForm):
         appointment.hospital = self.cleaned_data['hospital']
         appointment.doctor = self.cleaned_data['doctor']
         appointment.patient = self.cleaned_data['patient']
+        appointment.appointment_type = self.cleaned_data['appointment_type']
         appointment.startTime = self.cleaned_data['startTime']
         appointment.endTime = self.cleaned_data['endTime']
 
     def generate(self):
         return Appointment(
-            doctor = self.cleaned_data['doctor'],
-            patient = self.cleaned_data['patient'],
-            description = self.cleaned_data['description'],
-            hospital = self.cleaned_data['hospital'],
-            startTime = self.cleaned_data['startTime'],
-            endTime = self.cleaned_data['endTime']
+            doctor=self.cleaned_data['doctor'],
+            patient=self.cleaned_data['patient'],
+            description=self.cleaned_data['description'],
+            hospital=self.cleaned_data['hospital'],
+            appointment_type = self.cleaned_data['appointment_type'],
+            startTime=self.cleaned_data['startTime'],
+            endTime=self.cleaned_data['endTime']
         )
     """
     This is a validator that checks if the appointment is conflicting with any other already

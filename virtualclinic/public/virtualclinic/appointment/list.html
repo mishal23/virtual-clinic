@@ -37,6 +37,7 @@
                         <th>End Time</th>
                         <th>Status</th>
                         <th data-defaultsort='disabled'>Options</th>
+                        <th>Type</th>
                     </thead>
                     <tbody>
                         {% for appointment in query %}
@@ -64,13 +65,14 @@
                                                             {{ appointment.pk }},
                                                             '{{ appointment.startTime }}',
                                                             '{{ appointment.hospital.name|sanitizeJS }}'
-                                                        );
+                                                        )
                                                 };
                                             </script>
                                             <button onclick="proxy{{ appointment.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirm-modal">Cancel</button>
                                         {% endif %}
                                     {% endif %}
                                 </td>
+                                <td>{{ appointment.appointment_type }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

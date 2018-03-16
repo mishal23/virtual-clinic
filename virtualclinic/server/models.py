@@ -14,6 +14,11 @@ IND_STATES = (
 )
 
 
+APPOINTMENT_TYPE = (
+    ("Offline", "Offline"), ("Online","Online")
+)
+
+
 class Speciality(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
@@ -226,19 +231,21 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Account, related_name="appointment_patient",on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
     status = models.CharField(max_length=50, default="Active")
-    hospital = models.ForeignKey(Hospital,on_delete = models.CASCADE)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    appointment_type = models.CharField(max_length=20, default="Offline")
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
 
     def get_populated_fields(self):
         """used to collect form data"""
         fields = {
-            'doctor':self.doctor,
-            'patient':self.patient,
-            'description':self.description,
-            'hospital':self.hospital,
-            'startTime':self.startTime,
-            'endTime':self.endTime,
+            'doctor': self.doctor,
+            'patient': self.patient,
+            'description': self.description,
+            'hospital': self.hospital,
+            'appointment_type': self.appointment_type,
+            'startTime': self.startTime,
+            'endTime': self.endTime,
         }
         return fields
 
