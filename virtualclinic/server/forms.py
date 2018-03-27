@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality, APPOINTMENT_TYPE
+from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality, APPOINTMENT_TYPE, Symptom
 
 
 def validate_username_available(username):
@@ -166,6 +166,8 @@ class ProfileForm(BasicForm):
 class AppointmentForm(BasicForm):
     description = forms.CharField(required=True, max_length=50)
     setup_field(description,'Enter description here')
+    symptom = forms.ModelChoiceField(queryset=Symptom.objects.all())
+    setup_field(symptom)
     hospital = forms.ModelChoiceField(queryset=Hospital.objects.all())
     setup_field(hospital)
     doctor = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_DOCTOR))
@@ -181,6 +183,7 @@ class AppointmentForm(BasicForm):
 
     def assign(self, appointment):
         appointment.description = self.cleaned_data['description']
+        appointment.symptom = self.cleaned_data['symptom']
         appointment.hospital = self.cleaned_data['hospital']
         appointment.doctor = self.cleaned_data['doctor']
         appointment.patient = self.cleaned_data['patient']
@@ -193,6 +196,7 @@ class AppointmentForm(BasicForm):
             doctor=self.cleaned_data['doctor'],
             patient=self.cleaned_data['patient'],
             description=self.cleaned_data['description'],
+            symptom=self.cleaned_data['symptom'],
             hospital=self.cleaned_data['hospital'],
             appointment_type = self.cleaned_data['appointment_type'],
             startTime=self.cleaned_data['startTime'],
@@ -222,7 +226,7 @@ class SpecialityForm(BasicForm):
 class SymptomForm(BasicForm):
     name = forms.CharField(label='Name of symptom',max_length=50)
     setup_field(name, 'Enter symptom name here')
-    description = forms.CharField(label='Name of symptom')
+    description = forms.CharField(label='Description of Symptom')
     setup_field(description, 'Enter symptom description here')
 
 

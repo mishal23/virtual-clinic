@@ -11,7 +11,7 @@ from server import views_medicalinfo
 from server import views_appointment
 from server import views_admin
 from server import views_message
-
+from .views import GeneratePdf
 
 app_name = 'server'
 
@@ -64,4 +64,6 @@ urlpatterns = [
     url(r'^medicalinfo/list/$', views_medicalinfo.list_view, name='medicalinfo/list'),
     url(r'^medicalinfo/update/$', views_medicalinfo.update_view, name='medicalinfo/update'),
     url(r'^medicalinfo/patient/$', views_medicalinfo.update_view, name='medicalinfo/patient'),
+
+    url(r'^pdf/$', GeneratePdf.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

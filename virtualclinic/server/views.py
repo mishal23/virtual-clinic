@@ -1,9 +1,29 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
+import datetime
 from server.models import Account, Profile, Action, MedicalInfo
 from server import logger
+from easy_pdf.views import PDFTemplateView
+from server.utils import render_to_pdf
+from django.views.generic import View 
+from django.template.loader import get_template
+
+
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        template = get_template('pdf.html')
+        data = {
+            'today': datetime.date.today(),
+            'patient_name': 'Patient Patient',
+            'doctor_name': 'Doctor Doctor',
+            'symptoms': 'Cough & Cold',
+            'medication': 'Antibiotics',
+            'order_id': 1233434,
+        }
+        pdf = render_to_pdf('pdf.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
 
 
 def authentication_check(request, required_roles=None, required_GET=None):
