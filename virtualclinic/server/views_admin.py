@@ -5,8 +5,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.utils import IntegrityError
 
-from server.forms import SpecialityForm, EmployeeRegistrationForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
-from server.models import Speciality, Account, Action, Hospital, Location, Statistics
+from server.forms import SpecialityForm, SymptomForm, EmployeeRegistrationForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
+from server.models import Speciality, Account, Action, Hospital, Location, Statistics, Symptom
 from server import logger
 from server import views
 
@@ -33,6 +33,87 @@ def parse_speciality_delete(request):
             return HttpResponseRedirect('/admin/speciality/')
 
 
+def parse_symptom_delete(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None:
+        return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        if 'delete' in request.POST and 'pk' in request.POST:
+            pk = request.POST['pk']
+            try:
+                symptom = Symptom.objects.get(pk=pk)
+            except Exception:
+                template_data['alert_danger'] = "Unable to delete the symptom. Please try again later."
+                return
+            symptom.delete()
+            logger.log(Action.ACTION_ADMIN, 'Symptom cancelled', request.user.account)
+            template_data['alert_success'] = "The symptom has been deleted."
+            return HttpResponseRedirect('/admin/symptom/')
+
+
+def user_archive(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None:
+        return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        if 'delete' in request.POST and 'pk' in request.POST:
+            pk = request.POST['pk']
+            try:
+                user = Account.objects.get(pk=pk)
+            except Exception:
+                template_data['alert_danger'] = "Unable to delete the user. Please try again later"
+                return
+            user.archive = True
+            user.save()
+            #logger.log(Action.ACTION_ADMIN, 'Admin deleted a user',user)
+            template_data['alert_success'] = "The user has been deleted."
+            return HttpResponseRedirect('/admin/users')
+
+
+def view_archived_users(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None:
+        return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    template_data['query'] = Account.objects.filter(archive=True)
+    return render(request, 'virtualclinic/admin/archived_users.html', template_data)
+
+
+def restore_user(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None:
+        return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        if 'restore' in request.POST and 'pk' in request.POST:
+            pk = request.POST['pk']
+            try:
+                user = Account.objects.get(pk=pk)
+            except Exception:
+                template_data['alert_danger'] = "Unable to delete the user. Please try again later"
+                return HttpResponseRedirect('/admin/users')
+            user.archive = False
+            user.save()
+            logger.log(Action.ACTION_ADMIN, 'Admin restored the user',user)
+            template_data['alert_success'] = "The user has been restored."
+            return HttpResponseRedirect('/admin/users')
+    return HttpResponseRedirect('/admin/users')
+
+
 def users_view(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -51,7 +132,7 @@ def users_view(request):
             logger.log(Action.ACTION_ADMIN, 'Admin modified ' + account.user.username + "'s role", request.user.account)
             template_data['alert_success'] = "Updated" + account.user.username + "'s role!"
     # Parse search sorting
-    template_data['query'] = Account.objects.all().order_by('-role')
+    template_data['query'] = Account.objects.filter(archive=False).order_by('-role')
     return render(request,'virtualclinic/admin/users.html', template_data)
 
 
@@ -76,6 +157,17 @@ def view_speciality(request):
     # Proceed with the rest of the view
     template_data['query'] = Speciality.objects.all()
     return render(request, 'virtualclinic/admin/speciality.html', template_data)
+
+
+def view_symptom(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    template_data['query'] = Symptom.objects.all()
+    return render(request, 'virtualclinic/admin/symptoms.html', template_data)
 
 
 def add_speciality(request):
@@ -106,6 +198,35 @@ def add_speciality(request):
         form = SpecialityForm()
     template_data['form'] = form
     return render(request, 'virtualclinic/admin/add_speciality.html', template_data)
+
+def add_symptom(request):
+    # Authentication check
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: 
+        return authentication_result
+    # Get template data from the session
+    template_data = views.parse_session(
+        request,
+        {'form_button': "Add Symptom"}
+    )
+    #parse_speciality_delete(request, template_data)  # parse appointment cancelling
+    # Proceed with the rest of the view
+    if request.method == 'POST':
+        form = SymptomForm(request.POST)
+        if form.is_valid():
+            symptom = Symptom(
+                name=form.cleaned_data['name'],
+                description=form.cleaned_data['description']
+            )
+            symptom.save()
+            form = SymptomForm()     # Clean the form when page is redisplayed
+            template_data['alert_success'] = "Successfully added the Symptom!"
+            logger.log(Action.ACTION_ADMIN, 'Admin added ' + symptom.name, request.user.account)
+            return HttpResponseRedirect('/admin/symptom')
+    else:
+        form = SymptomForm()
+    template_data['form'] = form
+    return render(request, 'virtualclinic/admin/add_symptom.html', template_data)
 
 
 def add_hospital_view(request):

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% block title %}Speciality{% endblock %}
+{% block sidebar_admin_symptom %}active{% endblock %}
+{% block body_header %}
+    View Symptom
+    <br>
+    <a class="btn btn-success btn-sm" href="/admin/add_symptom/" role="button">Add Symptom</a>
+{% endblock %}
+{% block body %}
+    <table id="datatable" class="table table-hover table-striped table-bordered">
+        <thead>
+            <th>Symptom</th>
+            <th>Description</th>
+            <th>Option</th>
+        </thead>
+        <tbody>
+            {% for symptom in query %}
+                <tr>
+                    <td>{{ symptom.name }}</td>
+                    <td>{{ symptom.description }}</td>
+                    <td><button onclick="proxy{{ symptom.pk }}()" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#symptom-modal">Delete</button></td>
+                <script type="text/javascript">
+                    function proxy{{ symptom.pk }}() {
+                        configureModal(
+                            {{ symptom.pk }},
+                            '{{ symptom.name }}'
+                        );
+                    };
+                </script>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "virtualclinic/admin/symptom_modal.html" %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable();
+        });
+        function configureModal(pk, name) {
+            document.getElementById('symptom-modal-body').innerHTML = 'Are you sure you want to delete the symptom '.concat(name, '?');
+            document.getElementById('symptom-modal-hidden').value = pk;
+        }
+    </script>
+{% endblock %}

@@ -25,6 +25,14 @@ class Speciality(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Symptom(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
         
 
 class Location(models.Model):
@@ -154,8 +162,9 @@ class Account(models.Model):
         return 0
 
     role = models.IntegerField(default=0, choices=ACCOUNT_TYPES)
-    profile = models.OneToOneField(Profile, on_delete = models.CASCADE)
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    archive = models.BooleanField(default=False)
 
     def __str__(self):
         if self.role == 20:
@@ -167,7 +176,8 @@ class Account(models.Model):
         list_display = (
             'role',
             'profile',
-            'user'
+            'user',
+            'archive'
         )
 
 

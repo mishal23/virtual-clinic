@@ -219,6 +219,13 @@ class SpecialityForm(BasicForm):
     setup_field(description, 'Enter speciality description here')
 
 
+class SymptomForm(BasicForm):
+    name = forms.CharField(label='Name of symptom',max_length=50)
+    setup_field(name, 'Enter symptom name here')
+    description = forms.CharField(label='Name of symptom')
+    setup_field(description, 'Enter symptom description here')
+
+
 class EmployeeRegistrationForm(BasicForm):
     firstname = forms.CharField(label='First Name', max_length=50)
     setup_field(firstname,'Enter first name here')

@@ -6,6 +6,7 @@
     Manage Registered VirtualClinic Users
     <br>
     <a class="btn btn-success btn-sm" href="/admin/createemployee/" role="button">Add Employee</a>
+    <a class="btn btn-info btn-sm" href="/admin/archived_users/" role="button">View Archived Users</a>
 {% endblock %}
 {% block body %}
     <table id="datatable" class="table table-hover table-striped table-bordered">
@@ -14,6 +15,7 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Role</th>
+            <th>Action</th>
         </thead>
         <tbody>
             {% for account in query %}
@@ -35,15 +37,49 @@
                                 <input class="btn btn-primary" type="submit" value="Save"/>
                             </form>
                         </td>
+                                <script type="text/javascript">
+                                                function proxy{{ account.pk }}() {
+                                                    configureModal(
+                                                            {{ account.pk }},
+                                                            '{{ account.user.username }}',
+                                                            '{{ account.role }}'
+                                                        )
+                                                };
+                                            </script>
+                        <td><button onclick="proxy{{ account.pk }}()" type="button" class="btn btn-danger" data-toggle="modal" data-target="#archive-modal">Archive</button></td>
                     {% comment %}{% endif %}{% endcomment %}
 
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% include "virtualclinic/admin/user_modal.html" %}
     <script type="text/javascript">
         $(document).ready(function() {
             $('#datatable').DataTable();
         });
+
+        function configureModal(pk, username, role) {
+            if(role == 10) {
+                document.getElementById('archive-modal-body').innerHTML = 'Are you sure you want to archive the patient '.concat(username, '?');
+                document.getElementById('archive-modal-hidden').value = pk;
+            }
+            else if(role == 20) {
+                document.getElementById('archive-modal-body').innerHTML = 'Are you sure you want to archive the doctor '.concat(username, '?');
+                document.getElementById('archive-modal-hidden').value = pk;
+            }
+            else if(role == 30) {
+                document.getElementById('archive-modal-body').innerHTML = 'Are you sure you want to archive the admin '.concat(username, '?');
+                document.getElementById('archive-modal-hidden').value = pk;
+            }
+            else if(role == 40) {
+                document.getElementById('archive-modal-body').innerHTML = 'Are you sure you want to archive the lab '.concat(username, '?');
+                document.getElementById('archive-modal-hidden').value = pk;
+            }
+            else if(role == 50) {
+                document.getElementById('archive-modal-body').innerHTML = 'Are you sure you want to archive the chemist '.concat(username, '?');
+                document.getElementById('archive-modal-hidden').value = pk;
+            }
+        }
     </script>
 {% endblock %}
