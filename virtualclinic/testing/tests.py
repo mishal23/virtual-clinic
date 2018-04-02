@@ -2,7 +2,12 @@ from django.test import TestCase
 
 # Create your tests here.
 import unittest
+from django.urls import resolve
 from server.models import Speciality, Location, Hospital, MedicalInfo
+from server import views
+from server import views_home
+from server.views_home import *
+from django.test.client import Client
 
 
 # Testing Models
@@ -48,14 +53,43 @@ class HospitalTestCase(TestCase):
 		self.assertEqual(hospital.location.address,"Mukka")
 
 
-class MedicalInfoTestCase(TestCase):
-	""" Test for Medical Info TestCase """
+# class ProfileTestCase(TestCase):
 
 
 # Testing the views
 
-class ViewTest(TestCase):
+class TestHomeViews(TestCase):
 
-	def test_homepage(self):
-		response = self.client.get('/')
-		self.assertRedirects(response, '/setup/')
+	def test_login(self):
+		found = resolve('/')
+		self.assertEqual(found.func, login_view)
+
+
+# class TestMedicalTestViews(TestCase):
+
+
+# class TestAppointmentViews(TestCase):
+
+
+# class TestPrescriptionViews(TestCase):
+
+
+# class TestMedicalInfoViews(TestCase):
+
+
+# class TestAdminViews(TestCase):
+
+
+# class TestProfileViews(TestCase):
+
+
+class InvalidUser(TestCase):
+	def setUp(self):
+		self.client = Client()
+
+	def test_invalidUser(self):
+		response = self.client.post('/',{'username':'test@virtualclinic.com','password':'test'})
+		self.assertRedirects(response,'/setup/', status_code=302, target_status_code=200, msg_prefix='')
+
+
+# Testing the forms
