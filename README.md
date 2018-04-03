@@ -69,7 +69,7 @@ A software to simplify the process of Health Care in hospitals to help the patie
     </tr>
     <tr>
       <td>development</td>
-      <td>Failing</td>
+      <td>Passing</td>
       <td>MySQL</td>
     </tr>
     <tr>
