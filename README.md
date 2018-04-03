@@ -2,6 +2,8 @@
 
 Project for Software Engineering Course
 
+Application can be found here: http://virtual-clinic.herokuapp.com/
+
 The repository has four branches:
 <table>
   <thead>
