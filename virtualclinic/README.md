@@ -29,8 +29,7 @@ virtualenv ENV
 cd ENV
 source bin/activate
 pip install --upgrade setuptools
-pip install django
-pip install mysqlclient
+pip install -r requirements.txt
 ```
 
 ## How to Run?
