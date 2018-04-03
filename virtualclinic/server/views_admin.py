@@ -320,8 +320,6 @@ def statistic_view(request):
 
             template_data['total_logins'] = Action.objects.filter(description__icontains="Account login",timePerformed__range = (statistics.startDate, statistics.endDate) ).count()
             template_data['total_logouts'] = Action.objects.filter(description__icontains="Account logout",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
-            template_data['total_admitted'] = Action.objects.filter(description__icontains="Admitted Patient",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
-            template_data['total_discharged'] = Action.objects.filter(description__icontains="Discharged Patient",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
             template_data['total_appointments'] = Action.objects.filter(description__icontains="Appointment created",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
             template_data['total_med_tests'] = Action.objects.filter(description__icontains="Medical Test created",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
             template_data['total_registered'] = Action.objects.filter(description__icontains="registered",timePerformed__range = (statistics.startDate, statistics.endDate)).count()
@@ -339,8 +337,6 @@ def statistic_view(request):
 
         template_data['total_logins'] = 0
         template_data['total_logouts'] = 0
-        template_data['total_admitted'] = 0
-        template_data['total_discharged'] = 0
         template_data['total_appointments'] = 0
         template_data['total_med_tests'] = 0
         template_data['total_registered'] = 0
@@ -508,6 +504,10 @@ def generate_user_csv():
             role='Doctor'
         elif role== 30:
             role='Admin'
+        elif role == 40:
+            role='Lab'
+        elif role == 50:
+            role='Chemist'
         else:
             role='Unknown'
         write.writerow([firstname,lastname,role,username])
