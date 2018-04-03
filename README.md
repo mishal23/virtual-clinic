@@ -26,7 +26,7 @@ The repository has four branches:
     </tr>
     <tr>
       <td>production</td>
-      <td>Passing</td>
+      <td>Failing</td>
       <td>PostgreSQL</td>
     </tr>
     <tr>
