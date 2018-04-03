@@ -1,0 +1,19 @@
+<div class="modal fade" id="archive-modal" tabindex="-1" role="dialog" aria-labelledby="archive-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="archive-modal-title">Archive user confirmation</h3>
+            </div>
+            <div id="archive-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <form id="archive-modal-action" action="{% url 'server:admin/archive_user' %}" method="post">{% csrf_token %}
+                    <input id="archive-modal-hidden" type="hidden" name="pk" value="">
+                    <input id="archive-modal-submit" class="btn btn-danger btn-block" type="submit" name="delete" value="Archive the user"/>
+                </form>
+                <br>
+                <button id="archive-modal-return" type="button" class="btn btn-primary btn-block" data-dismiss="modal">Return</button>
+            </div>
+        </div>
+    </div>
+</div>

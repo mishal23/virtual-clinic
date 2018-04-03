@@ -11,7 +11,7 @@ from server import views_medicalinfo
 from server import views_appointment
 from server import views_admin
 from server import views_message
-
+from .views import GeneratePdf
 
 app_name = 'server'
 
@@ -24,11 +24,17 @@ urlpatterns = [
     url(r'^error/denied/$', views_home.error_denied_view, name='error/denied'),
 
     url(r'^admin/users/$', views_admin.users_view, name='admin/users'),
+    url(r'^admin/archive_user', views_admin.user_archive, name='admin/archive_user'),
+    url(r'^admin/archived_users', views_admin.view_archived_users, name='admin/archived_users'),
+    url(r'^admin/restore_users', views_admin.restore_user, name='admin/restore_users'),
     url(r'^admin/activity/$', views_admin.activity_view, name='admin/activity'),
     url(r'^admin/statistics/$', views_admin.statistic_view, name='admin/statistics'),
     url(r'^admin/speciality/$', views_admin.view_speciality, name='admin/speciality'),
     url(r'^admin/add_speciality/$', views_admin.add_speciality, name='admin/add_speciality'),
     url(r'^admin/delete_speciality', views_admin.parse_speciality_delete, name='admin/delete_speciality'),
+    url(r'^admin/symptom/$', views_admin.view_symptom, name='admin/symptom'),
+    url(r'^admin/add_symptom/$', views_admin.add_symptom, name='admin/add_symptom'),
+    url(r'^admin/delete_symptom', views_admin.parse_symptom_delete, name='admin/delete_symptom'),
     url(r'^admin/createemployee/$', views_admin.createemployee_view, name='admin/createemployee'),
     url(r'^admin/add_hospital/$', views_admin.add_hospital_view, name='admin/add_hospital'),
     url(r'^admin/import/$', views_admin.csv_import_view, name='admin/import'),
@@ -58,4 +64,6 @@ urlpatterns = [
     url(r'^medicalinfo/list/$', views_medicalinfo.list_view, name='medicalinfo/list'),
     url(r'^medicalinfo/update/$', views_medicalinfo.update_view, name='medicalinfo/update'),
     url(r'^medicalinfo/patient/$', views_medicalinfo.update_view, name='medicalinfo/patient'),
+
+    url(r'^pdf/$', GeneratePdf.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

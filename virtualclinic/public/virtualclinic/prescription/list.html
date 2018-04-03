@@ -24,6 +24,7 @@
             <th>Number of Refill(s)</th>
             <th>Status</th>
             <th data-defaultsort='disabled'>Options</th>
+            <th>Invoice</th>
         </thead>
         <tbody>
             {% for prescription in query %}
@@ -55,6 +56,7 @@
                             {% endif %}
                         {% endif %}
                     </td>
+                    <td><a class="btn btn-info btn-sm" href="/pdf/" role="button">Generate Invoice</a></td>
                 </tr>
             {% endfor %}
         </tbody>

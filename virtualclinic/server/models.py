@@ -13,8 +13,20 @@ IND_STATES = (
     ("West Bengal","West Bengal")
 )
 
+APPOINTMENT_TYPE = (
+    ("Offline","Offline"),("Online","Online")
+)
+
 
 class Speciality(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Symptom(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
 
@@ -227,6 +239,7 @@ class Appointment(models.Model):
     description = models.CharField(max_length=200)
     status = models.CharField(max_length=50, default="Active")
     hospital = models.ForeignKey(Hospital,on_delete = models.CASCADE)
+    appointment_type = models.CharField(max_length=20, default="Offline")
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
 
@@ -237,6 +250,7 @@ class Appointment(models.Model):
             'patient':self.patient,
             'description':self.description,
             'hospital':self.hospital,
+            'appointment_type':self.appointment_type,
             'startTime':self.startTime,
             'endTime':self.endTime,
         }
@@ -262,7 +276,7 @@ class Notification(models.Model):
 
 
 class Prescription(models.Model):
-    patient = models.ForeignKey(Account, related_name="prescription_patient",on_delete = models.CASCADE)
+    patient = models.ForeignKey(Account,related_name="prescription_patient",on_delete = models.CASCADE)
     doctor = models.ForeignKey(Account, related_name="prescription_doctor",on_delete = models.CASCADE)
     date = models.DateField()
     medication = models.CharField(max_length=100)
@@ -270,20 +284,6 @@ class Prescription(models.Model):
     instruction = models.CharField(max_length=200)
     refill = models.IntegerField()
     active = models.BooleanField(default=True)
-
-    def get_populated_fields(self):
-        """used to collect form data"""
-        fields = {
-            'patient': self.patient,
-            'doctor': self.doctor,
-            'date': self.date,
-            'medication': self.medication,
-            'strength': self.strength,
-            'instruction': self.instruction,
-            'refill': self.refill,
-            'active': self.active,
-        }
-        return fields
 
 
 class MedicalInfo(models.Model):

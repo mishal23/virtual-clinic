@@ -37,6 +37,7 @@
                         <th>End Time</th>
                         <th>Status</th>
                         <th data-defaultsort='disabled'>Options</th>
+                        <th>Type</th>
                     </thead>
                     <tbody>
                         {% for appointment in query %}
@@ -71,6 +72,7 @@
                                         {% endif %}
                                     {% endif %}
                                 </td>
+                                <td>{{ appointment.appointment_type }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

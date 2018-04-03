@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 
     <title>Virtual Clinic {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/flatly-bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="https://mishal23.github.io/flatly-bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/dashboard.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
@@ -88,6 +88,7 @@
                             <li class="{% block sidebar_prescription %}{% endblock %}"><a href="/prescription/list/">Prescriptions<i class="pull-right fa fa-file-text"></i></a></li>
                         {% endif %}
                         {% if user.account.role == 30 %}
+                            <li class="{% block sidebar_admin_symptom %}{% endblock %}"><a href="/admin/symptom/">Manage Symptom<i class="pull-right fa fa-hospital-o"></i></a></li>
                             <li class="{% block sidebar_admin_speciality %}{% endblock %}"><a href="/admin/speciality/">Manage Speciality<i class="pull-right fa fa-stethoscope"></i></a></li>
                             <li class="{% block sidebar_admin_users %}{% endblock %}"><a href="/admin/users/">Manage Users<i class="pull-right fa fa-users"></i></a></li>
                             <li class="{% block sidebar_admin_activity %}{% endblock %}"><a href="/admin/activity/">View Activity<i class="pull-right fa fa-eye"></i></a></li>

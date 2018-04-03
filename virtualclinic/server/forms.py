@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality
+from server.models import Account, Profile, Hospital, MedicalInfo, MedicalTest, IND_STATES, Appointment, Message, Speciality, APPOINTMENT_TYPE
 
 
 def validate_username_available(username):
@@ -87,6 +87,8 @@ class AccountRegisterForm(BasicForm):
     setup_field(lastname, 'Enter last name here')
     email = forms.EmailField(max_length=50, validators=[validate_username_available])
     setup_field(email, 'Enter email here')
+    speciality = forms.CharField(label="Speciality", required=False)
+    setup_field(speciality,"Enter speciality")
     password_first = forms.CharField(label='Password', min_length=1, max_length=50, widget=forms.PasswordInput())
     setup_field(password_first, "Enter password here")
     password_second = forms.CharField(label='', min_length=1, max_length=50, widget=forms.PasswordInput())
@@ -172,6 +174,8 @@ class AppointmentForm(BasicForm):
     setup_field(doctor)
     patient = forms.ModelChoiceField(queryset=Account.objects.filter(role=Account.ACCOUNT_PATIENT))
     setup_field(patient)
+    appointment_type = forms.ChoiceField(choices=APPOINTMENT_TYPE)
+    setup_field(appointment_type)
     startTime = forms.DateTimeField(label="Start Time")
     setup_field(startTime, "Enter as YYYY-MM-DD HH:MM")
     endTime = forms.DateTimeField(label="End Time")
@@ -182,6 +186,7 @@ class AppointmentForm(BasicForm):
         appointment.hospital = self.cleaned_data['hospital']
         appointment.doctor = self.cleaned_data['doctor']
         appointment.patient = self.cleaned_data['patient']
+        appointment.appointment_type = self.cleaned_data['appointment_type']
         appointment.startTime = self.cleaned_data['startTime']
         appointment.endTime = self.cleaned_data['endTime']
 
@@ -191,11 +196,12 @@ class AppointmentForm(BasicForm):
             patient = self.cleaned_data['patient'],
             description = self.cleaned_data['description'],
             hospital = self.cleaned_data['hospital'],
+            appointment_type = self.cleaned_data['appointment_type'],
             startTime = self.cleaned_data['startTime'],
             endTime = self.cleaned_data['endTime']
         )
     """
-    This is a validator that checks if the appointment is conflicting with any other already
+    Validator that checks if the appointment is conflicting with any other already
     made appointments
     """
     def clean(self):
@@ -213,6 +219,13 @@ class SpecialityForm(BasicForm):
     setup_field(name, 'Enter speciality name here')
     description = forms.CharField(label='Name of description')
     setup_field(description, 'Enter speciality description here')
+
+
+class SymptomForm(BasicForm):
+    name = forms.CharField(label='Name of symptom',max_length=50)
+    setup_field(name, 'Enter symptom name here')
+    description = forms.CharField(label='Description of Symptom')
+    setup_field(description, 'Enter symptom description here')
 
 
 class EmployeeRegistrationForm(BasicForm):
