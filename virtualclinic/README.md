@@ -29,6 +29,7 @@ virtualenv ENV
 cd ENV
 source bin/activate
 pip install --upgrade setuptools
+cd virtual-clinic/virtualclinic
 pip install -r requirements.txt
 ```
 
