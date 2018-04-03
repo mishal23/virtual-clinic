@@ -23,6 +23,7 @@ def setup_view(request):
                 form.cleaned_data['password_first'],
                 form.cleaned_data['firstname'],
                 form.cleaned_data['lastname'],
+                form.cleaned_data['speciality'],
                 Account.ACCOUNT_ADMIN
             )
             user = authenticate(
@@ -101,6 +102,7 @@ def register_view(request):
                 form.cleaned_data['password_first'],
                 form.cleaned_data['firstname'],
                 form.cleaned_data['lastname'],
+                form.cleaned_data['speciality'],
                 Account.ACCOUNT_PATIENT
             )
             user = authenticate(

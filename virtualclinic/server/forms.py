@@ -87,6 +87,8 @@ class AccountRegisterForm(BasicForm):
     setup_field(lastname, 'Enter last name here')
     email = forms.EmailField(max_length=50, validators=[validate_username_available])
     setup_field(email, 'Enter email here')
+    speciality = forms.CharField(label="Speciality", required=False)
+    setup_field(speciality,"Enter speciality")
     password_first = forms.CharField(label='Password', min_length=1, max_length=50, widget=forms.PasswordInput())
     setup_field(password_first, "Enter password here")
     password_second = forms.CharField(label='', min_length=1, max_length=50, widget=forms.PasswordInput())
