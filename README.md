@@ -9,6 +9,8 @@ A software to simplify the process of Health Care in hospitals to help the patie
 - Steps to deploy are mentioned [here](https://github.com/mishal23/virtual-clinic/blob/production/virtualclinic/README.md)
 
 ## Features:
+- Common Login for all users
+- Patient Registration
 ### Admin
 - Add Doctor/Lab/Chemist
 - Archive Users
