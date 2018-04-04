@@ -6,6 +6,7 @@ A software to simplify the process of Health Care in hospitals to help the patie
 - Everything is well documented, please take a look at [docs](/docs) folder.
 - All the required UML Diagrams are also drawn.
 - Finally it is also deployed: http://virtual-clinic.herokuapp.com/
+- Steps to deploy are mentioned [here](https://github.com/mishal23/virtual-clinic/blob/production/virtualclinic/README.md)
 
 ## Features:
 ### Admin
