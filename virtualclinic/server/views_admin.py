@@ -414,6 +414,16 @@ def handle_user_csv(f):
                         username, 'password', f_name, l_name,
                         Account.ACCOUNT_ADMIN,
                     )
+                elif role == "lab":
+                    views.register_user(
+                        username, 'password', f_name, l_name,
+                        Account.ACCOUNT_LAB,
+                    )
+                elif role == "chemist":
+                    views.register_user(
+                            username, 'password', f_name, l_name,
+                            Account.ACCOUNT_CHEMIST,
+                        )
                 else:
                     views.register_user(
                         username, 'password', f_name, l_name,
@@ -491,13 +501,13 @@ def csv_export_view(request):
 def generate_user_csv():
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="users.csv"'
-    write = writer(response, delimeter=',', quotechar='"', quoting=QUOTE_MINIMAL)
+    write = writer(response, delimiter=',', quotechar='"', quoting=QUOTE_MINIMAL)
     write.writerow(['FirstName', 'LastName', 'Role', 'Username'])
     for a in Account.objects.all():
         firstname = a.profile.firstname
         lastname = a.profile.lastname
         role = a.role
-        username = a.profile.username
+        username = a.user.username
         if role== 10:
             role = 'Patient'
         elif role == 20:
@@ -517,7 +527,7 @@ def generate_user_csv():
 def generate_hospital_csv():
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="hospitals.csv"'
-    write = writer(response,delimeter=',', quotechar='"',quoting=QUOTE_MINIMAL)
+    write = writer(response,delimiter=',', quotechar='"',quoting=QUOTE_MINIMAL)
     write.writerow(['Name','Address','City','State','Zip','Phone'])
     for h in Hospital.objects.all():
         write.writerow([h.name,h.location.address,h.location.city,h.location.state,h.location.zip,h.phone])
