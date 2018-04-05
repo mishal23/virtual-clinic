@@ -3,22 +3,40 @@ from django.test import TestCase
 from django.urls import resolve
 
 from server.views_admin import *
+import colorama
+from colorama import Fore, Style
 
 # Test for Admin Views
 
 class TestAdminViews(TestCase):
 
 	def test_specilaity_delete(self):
+		print(Fore.YELLOW + "Testing Speciality delete")
+		print(Style.RESET_ALL)
 		found = resolve('/admin/delete_speciality/')
-		self.assertEqual(found.func, parse_speciality_delete)
+		result = self.assertEqual(found.func, parse_speciality_delete)
+		if result == None:
+			print(Fore.GREEN + "Speciality delete verified")
+			print(Style.RESET_ALL)
 
 	def test_symptom_delete(self):
+		print(Fore.YELLOW + "Testing Symptom delete")
+		print(Style.RESET_ALL)
 		found = resolve('/admin/delete_symptom/')
-		self.assertEqual(found.func, parse_symptom_delete)
+		result = self.assertEqual(found.func, parse_symptom_delete)
+		if result == None:
+			print(Fore.GREEN + "Symptom delete verified")
+			print(Style.RESET_ALL)
 
 	def test_user_archive(self):
+		print(Fore.YELLOW + "Testing User archive")
+		print(Style.RESET_ALL)
 		found = resolve('/admin/archive_user/')
-		self.assertEqual(found.func, user_archive)
+		result = self.assertEqual(found.func, user_archive)
+		if result == None:
+			print(Fore.GREEN + "User archive verified")
+			print(Style.RESET_ALL)
+
 
 	def test_view_archived_users(self):
 		found = resolve('/admin/archived_users/')
