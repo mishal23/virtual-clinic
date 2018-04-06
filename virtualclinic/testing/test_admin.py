@@ -39,8 +39,13 @@ class TestAdminViews(TestCase):
 
 
 	def test_view_archived_users(self):
+		print(Fore.YELLOW + "Testing view archive users")
+		print(Style.RESET_ALL)
 		found = resolve('/admin/archived_users/')
-		self.assertEqual(found.func, view_archived_users)
+		result = self.assertEqual(found.func, view_archived_users)
+		if result == None:
+			print(Fore.GREEN + "View archive verified")
+			print(Style.RESET_ALL)
 
 	def test_restore_user(self):
 		found = resolve('/admin/restore_users/')
