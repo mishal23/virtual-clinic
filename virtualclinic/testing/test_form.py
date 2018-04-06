@@ -5,6 +5,8 @@ from datetime import datetime, date
 
 from server.models import Location, Hospital
 from server.forms import ProfileForm
+import colorama
+from colorama import Fore, Style
 
 class TestProfileForm(TestCase):
 
@@ -32,4 +34,10 @@ class TestProfileForm(TestCase):
 
 	def test_valid_profile_form(self):
 		form = ProfileForm(data=self.form_data)
-		self.assertTrue(form.is_valid())
+		print(Fore.YELLOW + "Testing valid profile")
+		print(Style.RESET_ALL)
+		result = self.assertTrue(form.is_valid())
+		if result == None:
+			print(Fore.GREEN + "Valid profile verified")
+			print(Style.RESET_ALL)
+

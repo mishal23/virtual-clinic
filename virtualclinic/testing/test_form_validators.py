@@ -5,6 +5,8 @@ from datetime import datetime, date
 
 from server.models import User
 from server.forms import validate_birthday, validate_username_exists, validate_username_available
+import colorama
+from colorama import Fore, Style
 
 class TestFormValidators(TestCase):
 	def setUp(self):
