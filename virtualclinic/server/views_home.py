@@ -75,10 +75,15 @@ def login_view(request):
                 username = form.cleaned_data['email'].lower(),
                 password = form.cleaned_data['password']
             )
-            login(request,user)
-            logger.log(Action.ACTION_ACCOUNT,"Account login",request.user.account)
-            request.session['alert_success'] = "Successfully logged into VirtualClinic."
-            return HttpResponseRedirect('/profile/')
+            userInfo = Account.objects.get(user=user)
+            if userInfo.archive == False:
+                login(request,user)
+                logger.log(Action.ACTION_ACCOUNT,"Account login",request.user.account)
+                request.session['alert_success'] = "Successfully logged into VirtualClinic."
+                return HttpResponseRedirect('/profile/')
+            else:
+                request.session['alert_danger'] = "Account is archived! Please create a new account"
+                return HttpResponseRedirect('/register/')
     else:
         form = LoginForm()
     template_data['form'] = form
