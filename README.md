@@ -1,4 +1,8 @@
 # Virtual Clinic - An Integrated Care System
+![travis-build-test](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)
+![Read the Docs](https://img.shields.io/readthedocs/pip.svg)
+![my website](https://img.shields.io/website-up-down-green-red/http/virtual-clinic.herokuapp.com.svg?label=website)
+
 A software to simplify the process of Health Care in hospitals to help the patients, doctor, labs, chemist.
 
 ## Introduction
