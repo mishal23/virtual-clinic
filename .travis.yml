@@ -9,21 +9,14 @@ env:
   - DJANGO=2.0.4
   - DB=postresql
 
-# before_install:
-#   - export DJANGO_SETTINGS_MODULE=your_project.settings
-#   - export PYTHONPATH=$HOME/builds/mishal23/virtual-clinic/
-#   - export PIP_USE_MIRRORS=true
+before_install:
+  - cd virtualclinic
 
 install:
   - pip install -r requirements.txt
-  # - pip install django==$DJANGO --quiet
-  # - pip install psycopg2 --quiet
-
-before_install: cd virtualclinic
 
 before_script:
   - psql -c "CREATE DATABASE mydb;" -U postgres
 
 script:
-#  - build.sh
   - python manage.py test
