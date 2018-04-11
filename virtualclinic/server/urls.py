@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^admin/add_hospital/$', views_admin.add_hospital_view, name='admin/add_hospital'),
     url(r'^admin/import/$', views_admin.csv_import_view, name='admin/import'),
     url(r'^admin/export/$', views_admin.csv_export_view, name='admin/export'),
+    url(r'^admin/backup/$', views_admin.backup_data, name='admin/backup'),
 
     url(r'^message/list/', views_message.list_view, name='message/list'),
     url(r'^message/new/', views_message.new_view, name='message/new'),

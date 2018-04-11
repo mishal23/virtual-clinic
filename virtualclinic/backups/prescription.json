@@ -1,0 +1,1 @@
+[{"model": "server.prescription", "pk": 1, "fields": {"patient": 2, "doctor": 3, "date": "2018-03-05", "medication": "Antibiotics", "strength": "Nice", "instruction": "Not much", "refill": 2, "active": true}}]

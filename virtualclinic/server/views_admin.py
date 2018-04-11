@@ -1,13 +1,15 @@
 from csv import QUOTE_MINIMAL, writer
 import re
 import sqlite3
-
+import sys
+from django.core.management import call_command
+from django.core import serializers
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.utils import IntegrityError
 
 from server.forms import SpecialityForm, SymptomForm, EmployeeRegistrationForm, ImportForm, ExportForm, HospitalForm, StatisticsForm
-from server.models import Speciality, Account, Action, Hospital, Location, Statistics, Symptom
+from server.models import Speciality, Account, Action, Hospital, Location, Statistics, Symptom, Profile, Appointment, Message, Prescription, MedicalInfo, MedicalTest
 from server import logger
 from server import views
 
@@ -532,3 +534,77 @@ def generate_hospital_csv():
     for h in Hospital.objects.all():
         write.writerow([h.name,h.location.address,h.location.city,h.location.state,h.location.zip,h.phone])
     return response
+
+def backup_data(request):
+    # Authentication check.
+    authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
+    if authentication_result is not None: return authentication_result
+    # Get the template data from the session
+    template_data = views.parse_session(request)
+    # Proceed with the rest of the view
+    data = serializers.serialize("json", Speciality.objects.all())
+    out = open("backups/speciality.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Symptom.objects.all())
+    out = open("backups/symptom.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Location.objects.all())
+    out = open("backups/location.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Hospital.objects.all())
+    out = open("backups/hospital.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Profile.objects.all())
+    out = open("backups/profile.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Account.objects.all())
+    out = open("backups/account.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Action.objects.all())
+    out = open("backups/action.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Appointment.objects.all())
+    out = open("backups/appointment.json", "w")
+    out.write(data)
+    out.close()
+    
+    data = serializers.serialize("json", Message.objects.all())
+    out = open("backups/message.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Prescription.objects.all())
+    out = open("backups/prescription.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", MedicalInfo.objects.all())
+    out = open("backups/medical_info.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", MedicalTest.objects.all())
+    out = open("backups/medical_test.json", "w")
+    out.write(data)
+    out.close()
+
+    data = serializers.serialize("json", Statistics.objects.all())
+    out = open("backups/statistics.json", "w")
+    out.write(data)
+    out.close()
+    return HttpResponseRedirect('/admin/activity')
+    

@@ -1,0 +1,1 @@
+[{"model": "server.hospital", "pk": 1, "fields": {"name": "Memorial Strong", "phone": "453423421", "location": 1}}, {"model": "server.hospital", "pk": 2, "fields": {"name": "Highland", "phone": "4352534", "location": 2}}]

@@ -159,4 +159,13 @@ class TestAdminViews(TestCase):
 		result=self.assertEqual(found.func, csv_export_view)
 		if result == None:
 			print(Fore.GREEN + "test export verified")
+			print(Style.RESET_ALL)
+
+	def test_backup(self):
+		print(Fore.YELLOW + "Testing backup")
+		print(Style.RESET_ALL)
+		found = resolve('/admin/backup/')
+		result=self.assertEqual(found.func, backup_data)
+		if result == None:
+			print(Fore.GREEN + "test backup verified")
 			print(Style.RESET_ALL)		

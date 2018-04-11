@@ -1,0 +1,1 @@
+[{"model": "server.medicaltest", "pk": 1, "fields": {"name": "Headache test", "date": "2018-03-05", "hospital": 2, "description": "Headache", "doctor": 3, "patient": 2, "private": false, "completed": true, "image1": "medicaltests/2018/03/05/1.png", "image2": "", "image3": "", "image4": "", "image5": ""}}]

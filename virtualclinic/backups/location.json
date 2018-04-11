@@ -1,0 +1,1 @@
+[{"model": "server.location", "pk": 1, "fields": {"city": "Unicorn", "zip": "12432", "state": "NY", "country": "India", "address": "1 Hope Street"}}, {"model": "server.location", "pk": 2, "fields": {"city": "Unicorn", "zip": "34232", "state": "NY", "country": "India", "address": "1 Happy Road"}}]
