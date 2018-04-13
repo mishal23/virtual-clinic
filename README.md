@@ -1,6 +1,6 @@
 # Virtual Clinic - An Integrated Care System
 
-![travis-build-test](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)
+[![travis-build-test](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)](https://travis-ci.org/mishal23/virtual-clinic?branch=master)
 ![my website](https://img.shields.io/website-up-down-green-red/http/virtual-clinic.herokuapp.com.svg?label=website)
 [![HitCount](http://hits.dwyl.com/mishal23/virtual-clinic.svg)](http://hits.dwyl.com/mishal23/virtual-clinic)
 [![Commits](https://github-basic-badges.herokuapp.com/commits/mishal23/virtual-clinic.svg)]()
