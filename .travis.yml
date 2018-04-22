@@ -14,9 +14,15 @@ before_install:
 
 install:
   - pip install -r requirements.txt
+  - pip install codecov
+  - pip install coverage
 
 before_script:
   - psql -c "CREATE DATABASE mydb;" -U postgres
+  - coverage run tests.py
 
 script:
   - python manage.py test
+
+after_success:
+  - codecov
