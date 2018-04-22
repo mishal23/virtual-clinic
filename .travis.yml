@@ -19,7 +19,7 @@ install:
 
 before_script:
   - psql -c "CREATE DATABASE mydb;" -U postgres
-  - coverage run tests.py
+  - coverage run manage.py test
 
 script:
   - python manage.py test
