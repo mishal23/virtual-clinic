@@ -2,6 +2,10 @@
 
 [![travis-build-test](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)](https://travis-ci.org/mishal23/virtual-clinic?branch=master)
 ![my website](https://img.shields.io/website-up-down-green-red/http/virtual-clinic.herokuapp.com.svg?label=website)
+<a href="https://scan.coverity.com/projects/mishal23-virtual-clinic">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/15847/badge.svg"/>
+</a>
 [![HitCount](http://hits.dwyl.com/mishal23/virtual-clinic.svg)](http://hits.dwyl.com/mishal23/virtual-clinic)
 [![Commits](https://github-basic-badges.herokuapp.com/commits/mishal23/virtual-clinic.svg)]()
 [![License](https://github-basic-badges.herokuapp.com/license/mishal23/virtual-clinic.svg)]()
