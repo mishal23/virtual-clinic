@@ -18,9 +18,12 @@ before_install:
 
 install:
   - pip install -r requirements.txt
+  - pip install codecov
+  - pip install coverage
 
 before_script:
   - psql -c "CREATE DATABASE mydb;" -U postgres
+  - coverage run manage.py test
 
 script:
   - python manage.py test
@@ -34,3 +37,6 @@ addons:
     build_command_prepend: "<Your build preprocessing command here>"
     build_command: "<Your build command here>"
     branch_pattern: master
+
+after_success:
+  - codecov
