@@ -39,17 +39,6 @@ CREATE TABLE IF NOT EXISTS `User` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `account` (
-	`id` int NOT NULL AUTO_INCREMENT,
-	`role` ENUM ('Patient','Doctor','Admin','Lab','Chemist'),
-	`profile_id` int UNIQUE,
-	`user_id` int UNIQUE,
-	`archived` bool DEFAULT False,
-	PRIMARY KEY (`id`),
-	CONSTRAINT FOREIGN KEY(`profile_id`) REFERENCES `profile`(`id`) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY(`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS `profile` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`firstname` varchar(50),
@@ -62,9 +51,21 @@ CREATE TABLE IF NOT EXISTS `profile` (
 	`prefHospital_id` int UNIQUE,
 	`primaryCareDoctor_id` int UNIQUE,
 	PRIMARY KEY (`id`),
-	CONSTRAINT FOREIGN KEY(`prefHospital_id`) REFERENCES `hospital`(`id`) ON DELETE CASCADE,
-	CONSTRAINT FOREIGN KEY(`primaryCareDoctor_id`) REFERENCES `account`(`id`) ON DELETE CASCADE
+	CONSTRAINT FOREIGN KEY(`prefHospital_id`) REFERENCES `hospital`(`id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `account` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`role` ENUM ('Patient','Doctor','Admin','Lab','Chemist'),
+	`profile_id` int UNIQUE,
+	`user_id` int UNIQUE,
+	`archived` bool DEFAULT False,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY(`profile_id`) REFERENCES `profile`(`id`) ON DELETE CASCADE,
+	FOREIGN KEY(`user_id`) REFERENCES `User`(`id`) ON DELETE CASCADE
+);
+
+ALTER TABLE `profile` ADD FOREIGN KEY(`primaryCareDoctor_id`) REFERENCES `account`(`id`) ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS `appointment` (
 	`id` int NOT NULL AUTO_INCREMENT,
@@ -120,4 +121,3 @@ CREATE TABLE IF NOT EXISTS `medical_test` (
 	CONSTRAINT FOREIGN KEY(`patient_id`) REFERENCES `account`(`id`) ON DELETE CASCADE,
 	CONSTRAINT FOREIGN KEY(`doctor_id`) REFERENCES `account`(`id`) ON DELETE CASCADE
 );
-
