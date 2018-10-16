@@ -1,19 +1,19 @@
 language: python
 
 python:
-  - 3.5
+  - 3.6
 
 services: postgresql
 
 env:
   - DJANGO=2.0.4
   - DB=postresql
-  global:
-    - secure: "fRVI2WTcb/F2Bqy7M/Jpn2Yr2H435/CdVJvx4CYw8stT0qAPkDJYFGfrOaS86TmgsiEXpNLPMFZ6dr88r1o0CSRPQlpTIw/9VOEKiofx9J85BcaWVQqDGPxoZArrCF8VfpqG/RgavwM6Nn4NhcBTBJiUTqIi4IJe/cWV/orKaRk="
+  # global:
+  #   - secure: "fRVI2WTcb/F2Bqy7M/Jpn2Yr2H435/CdVJvx4CYw8stT0qAPkDJYFGfrOaS86TmgsiEXpNLPMFZ6dr88r1o0CSRPQlpTIw/9VOEKiofx9J85BcaWVQqDGPxoZArrCF8VfpqG/RgavwM6Nn4NhcBTBJiUTqIi4IJe/cWV/orKaRk="
 
 
-before_install:
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+# before_install:
+#   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 install:
   - pip install -r requirements.txt
@@ -27,15 +27,15 @@ before_script:
 script:
   - python manage.py test
 
-addons:
-  coverity_scan:
-    project:
-      name: "mishal23/virtual-clinic"
-      description: "Virtual Clinic"
-    notification_email: shahmishal1998@gmail.com
-    build_command_prepend: "<Your build preprocessing command here>"
-    build_command: "<Your build command here>"
-    branch_pattern: master
+# addons:
+#   coverity_scan:
+#     project:
+#       name: "mishal23/virtual-clinic"
+#       description: "Virtual Clinic"
+#     notification_email: shahmishal1998@gmail.com
+#     build_command_prepend: "<Your build preprocessing command here>"
+#     build_command: "<Your build command here>"
+#     branch_pattern: master
 
 after_success:
   - codecov
