@@ -87,8 +87,8 @@ class AccountRegisterForm(BasicForm):
     setup_field(lastname, 'Enter last name here')
     email = forms.EmailField(max_length=50, validators=[validate_username_available])
     setup_field(email, 'Enter email here')
-    speciality = forms.CharField(label="Speciality", required=False)
-    setup_field(speciality,"Enter speciality")
+    # speciality = forms.CharField(label="Speciality", required=False)
+    # setup_field(speciality,"Enter speciality")
     password_first = forms.CharField(label='Password', min_length=1, max_length=50, widget=forms.PasswordInput())
     setup_field(password_first, "Enter password here")
     password_second = forms.CharField(label='', min_length=1, max_length=50, widget=forms.PasswordInput())
@@ -245,8 +245,8 @@ class EmployeeRegistrationForm(BasicForm):
     setup_field(password_second, "Enter password again")
     employee = forms.ChoiceField(required=False, choices=Account.EMPLOYEE_TYPES)
     setup_field(employee)
-    speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
-    setup_field(speciality)
+    # speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
+    # setup_field(speciality)
 
     def clean(self):
         """
