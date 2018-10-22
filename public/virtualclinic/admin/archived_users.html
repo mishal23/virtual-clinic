@@ -24,7 +24,11 @@
                         <td>{{ account.user.username }}</td>
                         <td>{{ account.profile.firstname }}</td>
                         <td>{{ account.profile.lastname }}</td>
-                        <td>{{ account.role }}</td>
+                        {% if account.role == 10 %}<td>Patient</td>{% endif %}
+                        {% if account.role == 20 %}<td>Doctor</td>{% endif %}
+                        {% if account.role == 30 %}<td>Admin</td>{% endif %}
+                        {% if account.role == 40 %}<td>Lab</td>{% endif %}
+                        {% if account.role == 50 %}<td>Chemist</td>{% endif %}
                                 <script type="text/javascript">
                                                 function proxy{{ account.pk }}() {
                                                     configureModal(

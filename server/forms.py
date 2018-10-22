@@ -149,8 +149,8 @@ class ProfileForm(BasicForm):
     primaryCareDoctor = forms.ModelChoiceField(label="Primary Care Doctor", required=False,
                                                queryset=Account.objects.filter(role=Account.ACCOUNT_DOCTOR))
     setup_field(primaryCareDoctor)
-    speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
-    setup_field(speciality)
+    # speciality = forms.ModelChoiceField(label="Speciality", required=False, queryset=Speciality.objects.all())
+    # setup_field(speciality)
 
     def assign(self, profile):
         profile.firstname = self.cleaned_data['firstname']
@@ -162,7 +162,7 @@ class ProfileForm(BasicForm):
         profile.allergies = self.cleaned_data['allergies']
         profile.prefHospital = self.cleaned_data['prefHospital']
         profile.primaryCareDoctor = self.cleaned_data['primaryCareDoctor']
-        profile.speciality = self.cleaned_data['speciality']
+        # profile.speciality = self.cleaned_data['speciality']
 
 
 class AppointmentForm(BasicForm):
@@ -276,6 +276,15 @@ class PrescriptionForm(BasicForm):
     setup_field(instruction,"Enter instruction here")
     refill = forms.IntegerField()
     setup_field(refill,"Enter number of refills")
+
+    def assign(self, prescription):
+        prescription.patient = self.cleaned_data['patient']
+        prescription.doctor = self.cleaned_data['doctor']
+        prescription.date = self.cleaned_data['date']
+        prescription.medication = self.cleaned_data['medication']
+        prescription.strength = self.cleaned_data['strength']
+        prescription.instruction = self.cleaned_data['instruction']
+        prescription.refill = self.cleaned_data['refill']
 
 
 class HospitalForm(BasicForm):
@@ -442,7 +451,7 @@ class ExportForm(forms.Form):
 class StatisticsForm(BasicForm):
     startDate = forms.DateTimeField(required=True,label="Start Time")
     setup_field(startDate,"Enter as YYYY-MM-DD HH-MM")
-    endDate = forms.DateTimeField(required=True, label="Start Time")
+    endDate = forms.DateTimeField(required=True, label="End Time")
     setup_field(endDate, "Enter as YYYY-MM-DD HH-MM")
 
     def assign(self,statistics):
