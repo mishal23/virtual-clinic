@@ -3,24 +3,29 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
-from server.models import Account, Profile, Action, MedicalInfo
+from server.models import Account, Profile, Action, MedicalInfo, Prescription
 from server import logger
 from easy_pdf.views import PDFTemplateView
 from server.utils import render_to_pdf
 from django.views.generic import View 
 from django.template.loader import get_template
 
-
 class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
         template = get_template('pdf.html')
+        pk = request.GET['pk']
+        print(pk)
+        prescription = Prescription.objects.get(pk=pk)
+        print(prescription)
         data = {
             'today': datetime.date.today(),
-            'patient_name': 'Patient Patient',
-            'doctor_name': 'Doctor Doctor',
-            'symptoms': 'Cough & Cold',
-            'medication': 'Antibiotics',
-            'order_id': 1233434,
+            'date': prescription.date,
+            'patient_name': prescription.patient,
+            'doctor_name': prescription.doctor,
+            'medication': prescription.medication,
+            'instruction': prescription.instruction,
+            'strength': prescription.strength,
+            'order_id': prescription.pk
         }
         pdf = render_to_pdf('pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
