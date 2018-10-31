@@ -87,7 +87,7 @@ class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     prefHospital = models.ForeignKey(Hospital, null=True, related_name="profile_prefhospital", on_delete = models.CASCADE)
     primaryCareDoctor = models.ForeignKey('Account', null=True, related_name="profile_primarycaredoctor", on_delete = models.CASCADE)
-    speciality = models.CharField(blank=True, max_length=250)
+    speciality = models.ForeignKey('Speciality', null=True, max_length=250, on_delete = models.CASCADE)
 
     def get_populated_fields(self):
         """To collect form data"""
@@ -108,6 +108,8 @@ class Profile(models.Model):
             fields['prefHospital'] = self.prefHospital
         if self.primaryCareDoctor is not None:
             fields['primaryCareDoctor'] = self.primaryCareDoctor
+        if self.speciality is not None:
+            fields['speciality'] = self.speciality
         return fields
 
     def __str__(self):

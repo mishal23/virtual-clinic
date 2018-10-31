@@ -284,8 +284,8 @@ def createemployee_view(request):
                 form.cleaned_data['password_first'],
                 form.cleaned_data['firstname'],
                 form.cleaned_data['lastname'],
-                form.cleaned_data['employee']
-                # form.cleaned_data['speciality']
+                form.cleaned_data['employee'],
+                form.cleaned_data['speciality']
             )
             logger.log(Action.ACTION_ADMIN, 'Admin registered '+ user.username, request.user.account)
             request.session['alert_success'] = "Successfully created new employee account"
