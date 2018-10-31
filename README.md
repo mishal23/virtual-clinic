@@ -18,7 +18,6 @@
 A software to simplify the process of Health Care in hospitals to help the patients, doctor, labs, chemist.
 
 ## Introduction
-- Project for Software Engineering Course
 - Everything is well documented, please take a look at [docs](/docs) folder.
 - All the required UML Diagrams are also drawn.
 - Finally it is also deployed: http://virtual-clinic.herokuapp.com/
@@ -120,4 +119,3 @@ A software to simplify the process of Health Care in hospitals to help the patie
 ## Contributors
 - Mishal Shah ([@mishal23](https://github.com/mishal23))
 - Samyak Jain ([@SamyakJ2512](https://github.com/SamyakJ2512))
-
