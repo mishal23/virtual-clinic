@@ -35,7 +35,7 @@
                     <td>{{ prescription.strength }}</td>
                     <td data-value="{{ prescription.date | date:'U' }}">{{ prescription.date }}</td>
                     <td>{{ prescription.refill }}</td>
-                    <td>{% if prescription.active %}Active{% else %}Deleted{% endif %}</td>
+                    <td>{% if prescription.active %}Active{% else %}Delivered{% endif %}</td>
                     <td>
                         {% if prescription.active %}
                             {% if user.account.role == 20 %}

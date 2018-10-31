@@ -58,6 +58,8 @@ def list_view(request):
     # proceed with rest of the view
     if request.user.account.role == Account.ACCOUNT_DOCTOR:
         template_data['query'] = MedicalTest.objects.all()
+    elif request.user.account.role == Account.ACCOUNT_LAB:
+        template_data['query'] = MedicalTest.objects.all()
     else:
         template_data['query'] = MedicalTest.objects.filter(private=False)
     return render(request, 'virtualclinic/medtest/list.html', template_data)

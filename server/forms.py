@@ -282,6 +282,8 @@ class PrescriptionForm(BasicForm):
     setup_field(instruction,"Enter instruction here")
     refill = forms.IntegerField()
     setup_field(refill,"Enter number of refills")
+    active = forms.BooleanField(required=False)
+    setup_field(active, "Check once completed")
 
     def assign(self, prescription):
         prescription.patient = self.cleaned_data['patient']
@@ -291,6 +293,7 @@ class PrescriptionForm(BasicForm):
         prescription.strength = self.cleaned_data['strength']
         prescription.instruction = self.cleaned_data['instruction']
         prescription.refill = self.cleaned_data['refill']
+        prescription.active = self.cleaned_data['active']
 
 
 class HospitalForm(BasicForm):

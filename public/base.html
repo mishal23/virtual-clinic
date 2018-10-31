@@ -81,7 +81,7 @@
                             <li class="{% block sidebar_appointment %}{% endblock %}"><a href="/appointment/list/">Appointments<i class="pull-right fa fa-calendar"></i></a></li>
                             <li class="{% block sidebar_medicalinfo %}{% endblock %}"><a href="{% if user.account.role == 10 %}/medicalinfo/patient/{% else %}/medicalinfo/list/{% endif %}">Medical Info<i class="pull-right fa fa-heartbeat"></i></a></li>
                         {% endif %}
-                        {% if user.account.role == 40 or user.account.role == 10%}
+                        {% if user.account.role == 40 or user.account.role == 10 or user.account.role == 20 %}
                             <li class="{% block sidebar_medtest %}{% endblock %}"><a href="/medtest/list">Medical Tests<i class="pull-right fa fa-flask"></i></a></li>
                         {% endif %}
                         {% if user.account.role == 10 or user.account.role == 20 or user.account.role == 50 %}

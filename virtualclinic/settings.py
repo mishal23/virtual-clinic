@@ -84,6 +84,17 @@ DATABASES = {
     )
 }
 
+# DATABASES = {
+#     'default':{
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'virtual_clinic',
+#         'USER': 'admin',
+#         'PASSWORD': 'Admin@vc1',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
 
 
 MEDIA_URL = '/media/'
