@@ -242,7 +242,7 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Account, related_name="appointment_doctor",on_delete = models.CASCADE)
     patient = models.ForeignKey(Account, related_name="appointment_patient",on_delete = models.CASCADE)
     description = models.CharField(max_length=200)
-    symptom = models.CharField(max_length=200, blank=True)
+    symptom = models.ForeignKey(Symptom, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, default="Active")
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     appointment_type = models.CharField(max_length=20, default="Offline")

@@ -12,6 +12,12 @@ from django.template.loader import get_template
 
 class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
+        authentication_result = authentication_check(
+            request,
+            [Account.ACCOUNT_DOCTOR, Account.ACCOUNT_PATIENT]
+        )
+        if authentication_result is not None:
+            return authentication_result
         template = get_template('pdf.html')
         pk = request.GET['pk']
         print(pk)
