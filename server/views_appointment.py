@@ -8,8 +8,10 @@ from server import views
 from server import appointment
 from server import logger
 from server import message
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required('server.view_appointment', login_url='/error/denied')
 def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -31,6 +33,8 @@ def list_view(request):
     return render(request, 'virtualclinic/appointment/list.html', template_data)
 
 
+
+@permission_required('server.view_appointment', login_url='/error/denied')
 def calendar_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -47,6 +51,7 @@ def calendar_view(request):
     return render(request, 'virtualclinic/appointment/calendar.html', template_data)
 
 
+@permission_required('server.change_appointment', login_url='/error/denied')
 def update_view(request):
     # Authentication check
     authentication_result = views.authentication_check(request, None, ['pk'])
@@ -107,6 +112,7 @@ def update_view(request):
     return render(request, 'virtualclinic/appointment/update.html', template_data)
 
 
+@permission_required('server.add_appointment', login_url='/error/denied')
 def create_view(request):
     # Authentication check
     authentication_result = views.authentication_check(

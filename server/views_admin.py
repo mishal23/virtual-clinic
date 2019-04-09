@@ -12,8 +12,10 @@ from server.forms import SpecialityForm, SymptomForm, EmployeeRegistrationForm, 
 from server.models import Speciality, Account, Action, Hospital, Location, Statistics, Symptom, Profile, Appointment, Message, Prescription, MedicalInfo, MedicalTest
 from server import logger
 from server import views
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required('server.delete_speciality', login_url='/error/denied')
 def parse_speciality_delete(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -36,6 +38,7 @@ def parse_speciality_delete(request):
             return HttpResponseRedirect('/admin/speciality/')
 
 
+@permission_required('server.delete_symptom', login_url='/error/denied')
 def parse_symptom_delete(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -151,6 +154,7 @@ def activity_view(request):
     return render(request,'virtualclinic/admin/activity.html',template_data)
 
 
+@permission_required('server.view_speciality', login_url='/error/denied')
 def view_speciality(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -162,6 +166,7 @@ def view_speciality(request):
     return render(request, 'virtualclinic/admin/speciality.html', template_data)
 
 
+@permission_required('server.view_symptom', login_url='/error/denied')
 def view_symptom(request):
     # Authentication check.
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -173,6 +178,7 @@ def view_symptom(request):
     return render(request, 'virtualclinic/admin/symptoms.html', template_data)
 
 
+@permission_required('server.add_speciality', login_url='/error/denied')
 def add_speciality(request):
     # Authentication check
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])
@@ -202,6 +208,8 @@ def add_speciality(request):
     template_data['form'] = form
     return render(request, 'virtualclinic/admin/add_speciality.html', template_data)
 
+
+@permission_required('server.add_symptom', login_url='/error/denied')
 def add_symptom(request):
     # Authentication check
     authentication_result = views.authentication_check(request, [Account.ACCOUNT_ADMIN])

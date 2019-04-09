@@ -9,8 +9,9 @@ from server.models import Action, Account
 from server import views
 from server.views import sanitize_js
 from server import message
+from django.contrib.auth.decorators import permission_required
 
-
+@permission_required('server.view_message', login_url='/error/denied')
 def list_view(request):
     # Authentication Check
     authentication_result = views.authentication_check(request)
@@ -26,6 +27,7 @@ def list_view(request):
     return render(request, 'virtualclinic/message/list.html', template_data)
 
 
+@permission_required('server.add_message', login_url='/error/denied')
 def new_view(request):
     # Authentication Check
     authentication_result = views.authentication_check(request)

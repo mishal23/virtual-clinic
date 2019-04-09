@@ -7,9 +7,23 @@ from server import appointment
 from server import views
 from server import logger
 from server import message
+import json
+from pprint import pprint
+import os
+import urllib.request, json 
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required('server.view_profile', login_url='/error/denied')
 def profile_view(request):
+    # pat = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/server/friends.json"
+    # with open(pat) as f:
+    #     data = json.load(f)
+
+    # pprint(data[0]["latitude"])
+    with urllib.request.urlopen("https://gist.githubusercontent.com/mishal23/ce4e164fea5bacb21d10970b9b8555af/raw/ab35e62c3a726924f703b7b6a8e7317ada002c66/friends.json") as url:
+        data = json.loads(url.read().decode())
+    print(data[0]['latitude'])
     # Authentication check
     authentication_result = views.authentication_check(request)
     if authentication_result is not None:
@@ -29,7 +43,6 @@ def profile_view(request):
     message.parse_message_archive(request, template_data)
     template_data['messages'] = Message.objects.filter(target=request.user.account, target_deleted=False)
     return render(request, 'virtualclinic/profile.html', template_data)
-
 
 def password_view(request):
     # Authentication check
@@ -56,7 +69,7 @@ def password_view(request):
     template_data['form'] = form
     return render(request,'virtualclinic/profile/password.html',template_data)
 
-
+@permission_required('server.change_profile', login_url='/error/denied')
 def update_view(request):
     # Authentication check.
     authentication_result = views.authentication_check(request)

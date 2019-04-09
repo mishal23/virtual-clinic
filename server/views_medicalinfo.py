@@ -5,8 +5,9 @@ from server.forms import MedicalInfoForm
 from server.models import Action, Account, MedicalInfo
 from server import logger
 from server import views
+from django.contrib.auth.decorators import permission_required
 
-
+@permission_required('server.view_appointment', login_url='/error/denied')
 def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -22,6 +23,7 @@ def list_view(request):
     return render(request,'virtualclinic/medicalinfo/list.html',template_data)
 
 
+@permission_required('server.change_medicalinfo', login_url='/error/denied')
 def update_view(request):
     # Authentication check
     authentication_result = views.authentication_check(

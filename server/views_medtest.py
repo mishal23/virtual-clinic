@@ -6,8 +6,10 @@ from server.forms import MedTestForm, MedTestDisplayForm
 from server.models import Account, Action, MedicalTest
 from server import logger
 from server import views
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required('server.add_medicaltest', login_url='/error/denied')
 def create_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -45,6 +47,7 @@ def create_view(request):
     return render(request,'virtualclinic/medtest/upload.html', template_data)
 
 
+@permission_required('server.view_medicaltest', login_url='/error/denied')
 def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -65,6 +68,7 @@ def list_view(request):
     return render(request, 'virtualclinic/medtest/list.html', template_data)
 
 
+@permission_required('server.view_medicaltest', login_url='/error/denied')
 def display_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -113,6 +117,7 @@ def display_view(request):
     return render(request, 'virtualclinic/medtest/display.html', template_data)
 
 
+@permission_required('server.change_medicaltest', login_url='/error/denied')
 def update_view(request):
     # Authentication check
     authentication_result = views.authentication_check(request, None, ['pk'])

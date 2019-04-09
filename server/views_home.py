@@ -6,6 +6,7 @@ from server.forms import LoginForm, AccountRegisterForm
 from server.models import Account, Action
 from server import views
 from server import logger
+from django.contrib.auth.decorators import permission_required
 
 
 def setup_view(request):

@@ -6,8 +6,9 @@ from server import logger
 from server.forms import PrescriptionForm
 from server.models import Account, Prescription, Action
 from server import views
+from django.contrib.auth.decorators import permission_required
 
-
+@permission_required('server.add_prescription', login_url='/error/denied')
 def create_view(request):
     # Authentication Check
     authentication_result = views.authentication_check(
@@ -52,6 +53,7 @@ def create_view(request):
     return render(request, 'virtualclinic/prescription/create.html', template_data)
 
 
+@permission_required('server.view_prescription', login_url='/error/denied')
 def list_view(request):
     # Authentication check
     authentication_result = views.authentication_check(
@@ -84,6 +86,7 @@ def list_view(request):
     return render(request,'virtualclinic/prescription/list.html',template_data)
 
 
+@permission_required('server.change_prescription', login_url='/error/denied')
 def update_view(request):
     # Authentication check
     authentication_result = views.authentication_check(request, None, ['pk'])
