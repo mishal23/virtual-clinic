@@ -68,6 +68,15 @@ def authentication_check(request, required_roles=None, required_GET=None):
                 return HttpResponseRedirect('/error/denied/')
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 def parse_session(request, template_data=None):
     """
     Checks the session for any alert data. If there is alert data, it added to the given template data.
@@ -75,8 +84,8 @@ def parse_session(request, template_data=None):
     :param template_data: The dictionary to update
     :return: The updated dictionary
     """
-    server_ip1 = socket.gethostbyname(socket.gethostname())
-    server_ip2 = socket.gethostbyname(socket.getfqdn())
+    server_ip1 = socket.gethostbyname(socket.getfqdn())
+    client_ip = get_client_ip(request)
     if template_data is None:
         template_data = {}
     if request.session.has_key('alert_success'):
@@ -87,7 +96,7 @@ def parse_session(request, template_data=None):
         del request.session['alert_danger']
 
     template_data['server_ip1'] = server_ip1
-    template_data['server_ip2'] = server_ip2
+    template_data['client_ip'] = client_ip
     return template_data
 
 
