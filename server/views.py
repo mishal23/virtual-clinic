@@ -9,6 +9,8 @@ from easy_pdf.views import PDFTemplateView
 from server.utils import render_to_pdf
 from django.views.generic import View 
 from django.template.loader import get_template
+import socket
+
 
 class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
@@ -73,6 +75,8 @@ def parse_session(request, template_data=None):
     :param template_data: The dictionary to update
     :return: The updated dictionary
     """
+    server_ip1 = socket.gethostbyname(socket.gethostname())
+    server_ip2 = socket.gethostbyname(socket.getfqdn())
     if template_data is None:
         template_data = {}
     if request.session.has_key('alert_success'):
@@ -81,6 +85,9 @@ def parse_session(request, template_data=None):
     if request.session.has_key('alert_danger'):
         template_data['alert_danger'] = request.session.get('alert_danger')
         del request.session['alert_danger']
+
+    template_data['server_ip1'] = server_ip1
+    template_data['server_ip2'] = server_ip2
     return template_data
 
 
