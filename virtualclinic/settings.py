@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1#^eo+u6b2k+kag#gu2-$g%#g!!x*dyvg(t#guzku-&^=q^^rq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False # True
+DEBUG = True # True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','virtual-clinic.herokuapp.com']
 

@@ -16,7 +16,7 @@ class TestFormValidators(TestCase):
 		self.assertRaises(forms.ValidationError, validate_birthday, self.birthday)
 
 	def test_validate_upper_bound_birthday(self):
-		self.birthday = date(2019,12,12)
+		self.birthday = date(2020,12,12)
 		self.assertRaises(forms.ValidationError, validate_birthday, self.birthday)
 
 	def test_validate_birthday(self):
