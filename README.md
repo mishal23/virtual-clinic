@@ -1,6 +1,6 @@
 # Virtual Clinic - An Integrated Care System
 
-[![travis-build-test](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)](https://travis-ci.org/mishal23/virtual-clinic?branch=master)
+[![Build Status](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)](https://travis-ci.org/mishal23/virtual-clinic)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mishal23/virtual-clinic.svg)](https://codecov.io/gh/mishal23/virtual-clinic)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1873/badge)](https://bestpractices.coreinfrastructure.org/projects/1873)
 ![my website](https://img.shields.io/website-up-down-green-red/http/virtual-clinic.herokuapp.com.svg?label=website)
