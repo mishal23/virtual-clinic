@@ -11,6 +11,7 @@ from server import views_medicalinfo
 from server import views_appointment
 from server import views_admin
 from server import views_message
+from server import views_api
 from .views import GeneratePdf
 
 app_name = 'server'
@@ -48,6 +49,7 @@ urlpatterns = [
     url(r'^appointment/calendar/$', views_appointment.calendar_view, name='appointment/calendar'),
     url(r'^appointment/update/$', views_appointment.update_view, name='appointment/update'),
     url(r'^appointment/create/$', views_appointment.create_view, name='appointment/create'),
+    url(r'^api/appointments/all/$', views_api.appointment_views, name='api/appointment/all'),
 
     url(r'^profile/$', views_profile.profile_view, name='profile'),
     url(r'^profile/update/$', views_profile.update_view, name='profile/update'),
