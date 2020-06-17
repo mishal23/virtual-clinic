@@ -26,6 +26,7 @@ A software to simplify the process of Health Care in hospitals to help the patie
 ## Features:
 - Common Login for all users
 - Patient Registration
+
 ### Admin
 - Add Doctor/Lab/Chemist
 - Archive Users
@@ -117,5 +118,7 @@ A software to simplify the process of Health Care in hospitals to help the patie
 - The software is under MIT License
 
 ## Contributors
-- Mishal Shah ([@mishal23](https://github.com/mishal23))
 - Samyak Jain ([@SamyakJ2512](https://github.com/SamyakJ2512))
+- Ashwin Joisa ([@Aj163](https://github.com/Aj163))
+- Mehnaz Yunus ([@mehnazyunus](https://github.com/mehnazyunus))
+- Mishal Shah ([@mishal23](https://github.com/mishal23))
