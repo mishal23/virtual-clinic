@@ -1,4 +1,5 @@
 ## Contributing
+
 - The repository is open for all kind of contributions (feature adding, bug fixing)
 - You can also write by opening an Issue and also solve a current issue if possible.
 - Fork this project to your Github account.
