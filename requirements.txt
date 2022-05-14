@@ -11,7 +11,7 @@ Pillow==8.2.0
 psycopg2==2.9.3
 PyPDF2==1.26.0
 pytz==2018.3
-reportlab==3.4.0
+reportlab==3.5.55
 six==1.11.0
 webencodings==0.5.1
 whitenoise==3.3.1
