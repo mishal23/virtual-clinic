@@ -9,7 +9,7 @@ httplib2==0.19.0
 mysqlclient==2.1.00
 Pillow==8.2.0
 psycopg2==2.9.3
-PyPDF2==1.26.0
+PyPDF2==1.27.9
 pytz==2018.3
 reportlab==3.4.0
 six==1.11.0
