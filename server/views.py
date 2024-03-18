@@ -5,7 +5,6 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from server.models import Account, Profile, Action, MedicalInfo, Prescription
 from server import logger
-from easy_pdf.views import PDFTemplateView
 from server.utils import render_to_pdf
 from django.views.generic import View 
 from django.template.loader import get_template
