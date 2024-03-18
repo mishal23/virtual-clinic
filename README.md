@@ -1,13 +1,8 @@
 # Virtual Clinic - An Integrated Care System
 
-[![Build Status](https://travis-ci.org/mishal23/virtual-clinic.svg?branch=master)](https://travis-ci.org/mishal23/virtual-clinic)
+[![Build Status](https://github.com/mishal23/virtual-clinic/actions/workflows/django.yml/badge.svg)](https://github.com/mishal23/virtual-clinic/blob/master/.github/workflows/django.yml)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mishal23/virtual-clinic.svg)](https://codecov.io/gh/mishal23/virtual-clinic)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1873/badge)](https://bestpractices.coreinfrastructure.org/projects/1873)
-![my website](https://img.shields.io/website-up-down-green-red/http/virtual-clinic.herokuapp.com.svg?label=website)
-[![Commits](https://github-basic-badges.herokuapp.com/commits/mishal23/virtual-clinic.svg)]()
-[![License](https://github-basic-badges.herokuapp.com/license/mishal23/virtual-clinic.svg)]()
-[![Pulls](https://github-basic-badges.herokuapp.com/pulls/mishal23/virtual-clinic.svg)]()
-[![Issues](https://github-basic-badges.herokuapp.com/issues/mishal23/virtual-clinic.svg)]()
 
 A software to simplify the process of Health Care in hospitals to help the patients, doctor, labs, chemist.
 
@@ -15,7 +10,6 @@ A software to simplify the process of Health Care in hospitals to help the patie
 
 - Everything is well documented, please take a look at [docs](./docs) folder.
 - All the required UML Diagrams are also drawn.
-- Finally it is also deployed: http://virtual-clinic.herokuapp.com/
 - Steps to setup the project are mentioned [here](./docs/INSTALLATION.md)
 - Steps to deploy are mentioned [here](./docs/DEPLOY.md)
 
