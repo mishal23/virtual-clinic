@@ -248,7 +248,7 @@ def add_hospital_view(request):
     if request.method == 'POST':
         form = HospitalForm(request.POST)
         if form.is_valid():
-            location = location(
+            location = Location(
                 city = form.cleaned_data['city'],
                 zip = form.cleaned_data['zip'],
                 state = form.cleaned_data['state'],
