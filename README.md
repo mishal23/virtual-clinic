@@ -85,6 +85,7 @@ A software to simplify the process of Health Care in hospitals to help the patie
 ## Feature Requests
 
 - Incase you would like to see a feature to be implemented in this project, please open an issue, or send an email to me!
+- I accept freelancing work to get this project developed and deployed as per your needs. Please send an email on: shahmishal1998@gmail.com to discuss further.
 
 ## License
 
