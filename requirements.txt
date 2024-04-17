@@ -2,7 +2,7 @@ colorama==0.4.6
 dj-database-url==2.1.0
 Django==4.2.11
 djangorestframework==3.15.0
-gunicorn==21.2.0
+gunicorn==22.0.0
 html5lib==1.1
 httplib2==0.22.0
 mysqlclient==2.2.4
